@@ -1511,11 +1511,26 @@ a:focus-visible, button:focus-visible {
   .cred-grid {
     grid-template-columns: 1fr;
   }
+  .cert-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 680px) {
   section {
     padding: 76px 0;
+  }
+  h1 {
+    font-size: clamp(38px, 9vw, 48px) !important;
+  }
+  .section-head h2 {
+    font-size: clamp(26px, 7vw, 32px);
+  }
+  .hero {
+    padding: 100px 0 60px;
+  }
+  .hero p.lede {
+    font-size: 16px;
   }
   .nav-links {
     position: fixed;
@@ -1540,6 +1555,9 @@ a:focus-visible, button:focus-visible {
   .skills-grid {
     grid-template-columns: 1fr;
   }
+  .cert-gallery {
+    grid-template-columns: 1fr;
+  }
   .hero-stats {
     flex-wrap: wrap;
     row-gap: 20px;
@@ -1554,6 +1572,30 @@ a:focus-visible, button:focus-visible {
     width: 280px;
     height: 380px;
     border-radius: 24px;
+    margin: 0 auto;
+  }
+  .timeline-track {
+    left: 12px;
+  }
+  .t-item {
+    padding-left: 36px;
+  }
+  .t-node {
+    left: 8px;
+    width: 10px;
+    height: 10px;
+  }
+  .carousel-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+  .contact-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .contact-actions .btn {
+    justify-content: center;
   }
 }
 
