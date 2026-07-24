@@ -12,7 +12,7 @@ export const PERSONAL_INFO = {
   phone: '+63 991 780 9416',
   github: 'https://github.com/krizzaheartesperas',
   linkedin: 'https://www.linkedin.com/in/krizza-heart-esperas-550ab9368',
-  resumeUrl: 'https://new-digital-portfolio.vercel.app/resume.pdf',
+  resumeUrl: '/resume.pdf',
   avatarUrl: 'https://new-digital-portfolio.vercel.app/profile.jpg',
   stats: [
     { number: '1', label: 'SOLO INTERNSHIP BUILD' },
