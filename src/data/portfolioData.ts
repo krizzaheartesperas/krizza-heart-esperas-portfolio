@@ -53,14 +53,16 @@ export const PROJECTS: ProjectItem[] = [
     tags: ['JavaScript', 'TypeScript', 'Node.js', 'Supabase', 'Vercel'],
     demoUrl: 'hris-project-beta.vercel.app',
     screenshotImages: [
+      '/projects/hris-ss1.jpg',
+      '/projects/hris-ss2.jpg',
+      '/projects/hris-ss3.jpg',
+      '/projects/hris-ss4.jpg'
+    ],
+    documentationImages: [
       '/projects/hris-1.jpg',
       '/projects/hris-2.jpg',
       '/projects/hris-3.jpg',
       '/projects/hris-4.jpg'
-    ],
-    documentationImages: [
-      '/projects/hris-1.jpg', // Placeholder just so the tab shows up
-      '/projects/hris-2.jpg'
     ]
   },
   {
@@ -146,7 +148,19 @@ export const PROJECTS: ProjectItem[] = [
     category: 'uiux',
     description: 'Designed the UI/UX for a safer-commuting mobile app in Camarines Norte, including QR verification of drivers and vehicles, a fare calculator to prevent overcharging, and a secure incident-reporting flow.',
     tags: ['Figma', 'UI/UX Design', 'User Research', 'Prototyping', 'Mobile UI'],
-    demoUrl: 'https://www.figma.com/design/s05VcTO5bV6JeZheL81szj/CAM-COMMUTE-GURU--FINAL-?node-id=0-1&t=1Ii4ylsu9o0kduPY-1'
+    demoUrl: 'https://www.figma.com/design/s05VcTO5bV6JeZheL81szj/CAM-COMMUTE-GURU--FINAL-?node-id=0-1&t=1Ii4ylsu9o0kduPY-1',
+    documentationImages: [
+      '/projects/camcom1.jpg',
+      '/projects/camcom2.jpg',
+      '/projects/camcom3.jpg',
+      '/projects/camcom4.jpg',
+      '/projects/camcom5.jpg',
+      '/projects/camcom6.jpg',
+      '/projects/camcom7.jpg',
+      '/projects/camcom8.jpg',
+      '/projects/camcom9.jpg',
+      '/projects/camcom10.jpg'
+    ]
   }
 ];
 
