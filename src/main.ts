@@ -16,6 +16,7 @@ function initApp(): void {
   // Render Dynamic Sections
   renderExperience('experienceContainer');
   renderProjects('timeline', 'all');
+  showInitialProjectTimeline();
   initCarousels();
   setupFolderTabs();
   renderSkills('skillsContainer');
@@ -99,36 +100,44 @@ function setupMobileNav(): void {
 }
 
 function setupThemeToggle(): void {
-  const themeToggle = document.getElementById('themeToggle') as HTMLButtonElement | null;
+  const themeToggles = document.querySelectorAll<HTMLButtonElement>('.theme-toggle');
   const storedTheme = localStorage.getItem('portfolio_theme');
   const initialTheme = storedTheme || 'dark';
 
-  document.documentElement.setAttribute('data-theme', initialTheme);
+  const applyTheme = (theme: string): void => {
+    document.documentElement.setAttribute('data-theme', theme);
+    const label = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+    themeToggles.forEach(toggle => {
+      toggle.setAttribute('aria-label', label);
+      toggle.setAttribute('title', label);
+    });
+  };
 
-  if (themeToggle) {
+  applyTheme(initialTheme);
+
+  themeToggles.forEach(themeToggle => {
     themeToggle.addEventListener('click', () => {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-      document.documentElement.setAttribute('data-theme', nextTheme);
+      applyTheme(nextTheme);
       localStorage.setItem('portfolio_theme', nextTheme);
     });
-  }
+  });
 }
 
 function setupScrollSpy(): void {
   const sections = document.querySelectorAll<HTMLElement>('section[id]');
-  const links = document.querySelectorAll<HTMLAnchorElement>('.nav-links a[href^="#"]');
+  const links = document.querySelectorAll<HTMLAnchorElement>('.nav-links a[href^="#"], .mobile-dock a[href^="#"]');
 
   const spyObserver = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           links.forEach(l => l.classList.remove('active'));
-          const active = document.querySelector<HTMLAnchorElement>(
-            `.nav-links a[href="#${entry.target.id}"]`
-          );
-          if (active) active.classList.add('active');
+          document.querySelectorAll<HTMLAnchorElement>(
+            `.nav-links a[href="#${entry.target.id}"], .mobile-dock a[href="#${entry.target.id}"]`
+          ).forEach(active => active.classList.add('active'));
         }
       });
     },
@@ -193,6 +202,15 @@ function setupProjectFilters(): void {
         });
       }
     });
+  });
+}
+
+function showInitialProjectTimeline(): void {
+  const timeline = document.getElementById('timeline');
+  if (!timeline) return;
+
+  requestAnimationFrame(() => {
+    timeline.classList.add('in');
   });
 }
 
