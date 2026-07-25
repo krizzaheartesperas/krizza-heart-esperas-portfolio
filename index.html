@@ -16,7 +16,9 @@
 
 <body>
 
-  <nav class="nav">
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+  <nav class="nav" id="mainNav">
     <div class="nav-inner">
       <a href="#home" class="brand">Krizza Heart Esperas</a>
       <div class="nav-links" id="navLinks">
@@ -46,7 +48,7 @@
           </svg>
         </button>
       </div>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -55,21 +57,23 @@
   <section class="hero" id="home">
     <div class="wrap hero-grid">
       <div>
-        <h1>Building modern web applications, and <span>meaningful user experiences</span>.</h1>
+        <h1 class="hero-title-full">Building modern web applications, and <span>meaningful user experiences</span>.</h1>
+        <h1 class="hero-title-short">Full-stack dev who <span>ships to production</span>.</h1>
         <div class="role mono">Full-Stack Web Developer · UI/UX Designer</div>
-        <p class="lede">BS Information Technology graduate with experience designing, developing, and deploying
+        <p class="lede lede-full">BS Information Technology graduate with experience designing, developing, and deploying
           full-stack applications using Next.js, TypeScript, and Supabase. Built a production-ready Human Resource
           Information System during internship and contributed to business and IoT projects through both software
           development and UI/UX design. Committed to building reliable, maintainable solutions that deliver real value
           to users and organizations.</p>
+        <p class="lede lede-short">BS IT grad · solo-built &amp; deployed a production HRIS · TypeScript, Next.js, Supabase · open to junior full-stack roles.</p>
         <div class="hero-actions">
           <a href="#projects" class="btn btn-primary">See projects</a>
-          <a href="#contact" class="btn btn-ghost">Get in touch</a>
+          <a href="/resume.pdf" class="btn btn-ghost" target="_blank" rel="noopener">Résumé</a>
         </div>
         <div class="hero-stats">
-          <div class="stat"><b>1</b><span>SOLO INTERNSHIP BUILD</span></div>
+          <div class="stat"><b>1</b><span>PROD BUILD</span></div>
           <div class="stat"><b>6+</b><span>PROJECTS</span></div>
-          <div class="stat"><b>3</b><span>AWARDS &amp; CITATIONS</span></div>
+          <div class="stat"><b>3</b><span>AWARDS</span></div>
         </div>
       </div>
       <div class="hero-photo-wrap">
@@ -142,8 +146,8 @@
     <div class="wrap about-grid">
       <div class="reveal">
         <div class="eyebrow">About</div>
-        <h2 style="font-size:30px;">Krizza Heart N. Esperas</h2>
-        <div class="edu-card" style="margin-top:24px;">
+        <h2 class="about-name">Krizza Heart N. Esperas</h2>
+        <div class="edu-card">
           <div class="eyebrow">Education</div>
           <h4>BS Information Technology</h4>
           <span class="school">University of Camarines Norte State</span>
@@ -191,8 +195,7 @@
             <textarea id="contactMessage" class="form-input"
               placeholder="Tell me about your project or role opportunities..." required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary"
-            style="width: 100%; justify-content: center; margin-top: 8px;">Send Message →</button>
+          <button type="submit" class="btn btn-primary btn-submit">Send Message →</button>
           <div id="formFeedback" class="form-feedback"></div>
         </form>
       </div>

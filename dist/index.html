@@ -1,181 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Krizza Heart Esperas — Full-Stack Web Developer</title>
-  <meta name="description" content="Portfolio of Krizza Heart Esperas, Full-Stack Web Developer & UI/UX Designer. BS Information Technology graduate specializing in TypeScript, Node.js, React, Supabase and IoT systems. Deployed on Vercel.">
+  <meta name="description"
+    content="Portfolio of Krizza Heart Esperas, Full-Stack Web Developer & UI/UX Designer. BS Information Technology graduate specializing in TypeScript, Node.js, React, Supabase and IoT systems. Deployed on Vercel.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-yU6CFqmc.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BqAkkHox.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-BnJE6a9v.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-DBsF0Dzd.css">
 </head>
+
 <body>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="#home" class="brand">Krizza Heart Esperas</a>
-    <div class="nav-links" id="navLinks">
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#credentials">Credentials</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-      <a href="https://new-digital-portfolio.vercel.app/resume.pdf" class="nav-cta" target="_blank" rel="noopener">Resume ↓</a>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+  <nav class="nav" id="mainNav">
+    <div class="nav-inner">
+      <a href="#home" class="brand">Krizza Heart Esperas</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#credentials">Credentials</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="/resume.pdf" class="nav-cta" target="_blank" rel="noopener">Resume</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+          <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
       </button>
     </div>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
+  </nav>
 
-<section class="hero" id="home">
-  <div class="wrap hero-grid">
-    <div>
-      <h1>Building clean, reliable systems —<br>from <span>HRIS</span> to IoT.</h1>
-      <div class="role mono">Full-Stack Web Developer · UI/UX Designer</div>
-      <p class="lede">BS Information Technology graduate who shipped a solo Human Resource Information System during internship, and led UI/UX and IoT work across three team projects. I like clear code, clear interfaces, and systems that don't break.</p>
-      <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary">See projects</a>
-        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+  <section class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div>
+        <h1 class="hero-title-full">Building modern web applications, and <span>meaningful user experiences</span>.</h1>
+        <h1 class="hero-title-short">Full-stack dev who <span>ships to production</span>.</h1>
+        <div class="role mono">Full-Stack Web Developer · UI/UX Designer</div>
+        <p class="lede lede-full">BS Information Technology graduate with experience designing, developing, and deploying
+          full-stack applications using Next.js, TypeScript, and Supabase. Built a production-ready Human Resource
+          Information System during internship and contributed to business and IoT projects through both software
+          development and UI/UX design. Committed to building reliable, maintainable solutions that deliver real value
+          to users and organizations.</p>
+        <p class="lede lede-short">BS IT grad · solo-built &amp; deployed a production HRIS · TypeScript, Next.js, Supabase · open to junior full-stack roles.</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">See projects</a>
+          <a href="/resume.pdf" class="btn btn-ghost" target="_blank" rel="noopener">Résumé</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b>1</b><span>PROD BUILD</span></div>
+          <div class="stat"><b>6+</b><span>PROJECTS</span></div>
+          <div class="stat"><b>3</b><span>AWARDS</span></div>
+        </div>
       </div>
-      <div class="hero-stats">
-        <div class="stat"><b>1</b><span>SOLO INTERNSHIP BUILD</span></div>
-        <div class="stat"><b>3</b><span>SHIPPED TEAM PROJECTS</span></div>
-        <div class="stat"><b>2</b><span>AWARDS &amp; CITATIONS</span></div>
-      </div>
-    </div>
-    <div class="hero-photo-wrap">
-      <div class="hero-portrait-card">
-        <img src="https://new-digital-portfolio.vercel.app/profile.jpg" alt="Krizza Heart Esperas" loading="eager">
-        <div class="portrait-overlay">
-          <div class="portrait-name">Krizza<br>Heart Esperas</div>
-          <div class="portrait-role">FULL-STACK WEB DEVELOPER, UI/UX DESIGNER</div>
+      <div class="hero-photo-wrap">
+        <div class="hero-portrait-card">
+          <img src="https://new-digital-portfolio.vercel.app/profile.jpg" alt="Krizza Heart Esperas" loading="eager">
+          <div class="portrait-overlay">
+            <div class="portrait-name">Krizza<br>Heart Esperas</div>
+            <div class="portrait-role">FULL-STACK WEB DEVELOPER, UI/UX DESIGNER</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="experience">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Experience</div>
-      <h2>The internship that shipped to production</h2>
-      <p>One role, one deployed system — end to end, solo.</p>
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Experience</div>
+        <h2>The internship that shipped to production</h2>
+        <p>One role, one deployed system — end to end, solo.</p>
+      </div>
+      <div id="experienceContainer"></div>
     </div>
-    <div id="experienceContainer"></div>
-  </div>
-</section>
+  </section>
 
-<section id="projects" class="section-alt">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Projects</div>
-      <h2>Academic &amp; team builds, newest first</h2>
-      <p>Each one taught me a different layer of the stack — mobile, embedded IoT, and interface design.</p>
+  <section id="projects" class="section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Projects</div>
+        <h2>Academic &amp; team builds, newest first</h2>
+        <p>Each one taught me a different layer of the stack — mobile, embedded IoT, and interface design.</p>
+      </div>
+
+      <!-- TypeScript Category Filter Controls -->
+      <div class="project-filters reveal">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="fullstack">Simulation & Data</button>
+        <button class="filter-btn" data-filter="iot">IoT & Hardware</button>
+        <button class="filter-btn" data-filter="uiux">UI/UX Design</button>
+      </div>
+
+      <div class="timeline reveal" id="timeline"></div>
     </div>
+  </section>
 
-    <!-- TypeScript Category Filter Controls -->
-    <div class="project-filters reveal">
-      <button class="filter-btn active" data-filter="all">All Projects</button>
-      <button class="filter-btn" data-filter="fullstack">Simulation & Data</button>
-      <button class="filter-btn" data-filter="iot">IoT & Hardware</button>
-      <button class="filter-btn" data-filter="uiux">UI/UX Design</button>
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Skills</div>
+        <h2>The stack I build with</h2>
+        <p>From backend systems to the interfaces on top.</p>
+      </div>
+      <div class="skills-grid" id="skillsContainer"></div>
     </div>
+  </section>
 
-    <div class="timeline reveal" id="timeline"></div>
-  </div>
-</section>
-
-<section id="skills">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Skills</div>
-      <h2>The stack I build with</h2>
-      <p>From backend systems to the interfaces on top.</p>
+  <section id="credentials" class="section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Credentials</div>
+        <h2>Recognition &amp; certifications</h2>
+        <p>Awards, a research citation, and continued learning.</p>
+      </div>
+      <div class="cred-grid" id="credentialsContainer"></div>
+      <div class="cert-gallery" id="certificatesContainer"></div>
     </div>
-    <div class="skills-grid" id="skillsContainer"></div>
-  </div>
-</section>
+  </section>
 
-<section id="credentials" class="section-alt">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Credentials</div>
-      <h2>Recognition &amp; certifications</h2>
-      <p>Awards, a research citation, and continued learning.</p>
-    </div>
-    <div class="cred-grid" id="credentialsContainer"></div>
-    <div class="cert-strip reveal" id="certificatesContainer"></div>
-  </div>
-</section>
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="reveal">
+        <div class="eyebrow">About</div>
+        <h2 class="about-name">Krizza Heart N. Esperas</h2>
+        <div class="edu-card">
+          <div class="eyebrow">Education</div>
+          <h4>BS Information Technology</h4>
+          <span class="school">University of Camarines Norte State</span>
+          <span class="date">Graduated June 2026</span>
+          <span class="date">GWA: 1.6</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <p>I'm a <strong>BS Information Technology graduate</strong> passionate about building modern web applications
+          and delivering solutions that create real business value. During my internship, I independently designed,
+          developed, and deployed a <strong>Human Resource Information System</strong>, taking ownership of the project
+          from planning to production while gaining hands-on experience in full-stack development.</p>
 
-<section id="about">
-  <div class="wrap about-grid">
-    <div class="reveal">
-      <div class="eyebrow">About</div>
-      <h2 style="font-size:30px;">Krizza Heart N. Esperas</h2>
-      <div class="edu-card" style="margin-top:24px;">
-        <div class="eyebrow">Education</div>
-        <h4>BS Information Technology</h4>
-        <span class="school">University of Camarines Norte State</span>
-        <span class="date">Graduated June 2026</span>
+        <p>Beyond my internship, I've contributed to <strong>business systems, IoT applications, and UI/UX
+            design</strong>, collaborating on projects that solve real-world challenges. I enjoy creating intuitive user
+          experiences, developing reliable backend systems, and writing clean, maintainable code that delivers a
+          seamless experience.</p>
+
+        <p>I'm eager to bring my technical skills, problem-solving mindset, and passion for continuous learning to a
+          team where I can contribute, grow, and build software that makes a meaningful impact.</p>
       </div>
     </div>
-    <div class="reveal">
-      <p>I'm a BS Information Technology graduate with a genuine pull toward full-stack web development and software engineering. During my internship, I designed, built, and deployed a Human Resource Information System from scratch using TypeScript, Node.js, Supabase, and PostgreSQL — my first real taste of owning a production system end to end.</p>
-      <p>Outside of that, I've worked across mobile apps, IoT-enabled hardware, and UI/UX design for community-focused projects around transportation safety and fair pricing in Camarines Norte. I enjoy the parts of engineering other people skip: clean data models, sensible auth flows, and interfaces people actually understand on the first try.</p>
-      <p>I'm a continuous learner who's happiest solving a problem no one's fully solved yet, and I'm looking for a team where I can keep building things that matter.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section class="contact" id="contact">
-  <div class="wrap contact-inner">
-    <div class="eyebrow">Contact</div>
-    <h2>Let's build something together.</h2>
-    <p>Open to junior/entry-level full-stack and web developer roles. Based in Camarines Norte, Philippines — happy to work remote.</p>
+  <section class="contact" id="contact">
+    <div class="wrap contact-inner">
+      <div class="eyebrow">Contact</div>
+      <h2>Let's build something together.</h2>
+      <p>Open to junior/entry-level full-stack and web developer roles. Based in Camarines Norte, Philippines — open to
+        remote work and willing to relocate.</p>
 
-    <!-- Interactive Contact Form -->
-    <div class="contact-form-box reveal">
-      <form id="contactForm">
-        <div class="form-group">
-          <label for="contactName">YOUR NAME</label>
-          <input type="text" id="contactName" class="form-input" placeholder="Name" required>
-        </div>
-        <div class="form-group">
-          <label for="contactEmail">YOUR EMAIL</label>
-          <input type="email" id="contactEmail" class="form-input" placeholder="name@gmail.com" required>
-        </div>
-        <div class="form-group">
-          <label for="contactMessage">MESSAGE</label>
-          <textarea id="contactMessage" class="form-input" placeholder="Tell me about your project or role opportunities..." required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 8px;">Send Message →</button>
-        <div id="formFeedback" class="form-feedback"></div>
-      </form>
-    </div>
+      <!-- Interactive Contact Form -->
+      <div class="contact-form-box reveal">
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="contactName">YOUR NAME</label>
+            <input type="text" id="contactName" class="form-input" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">YOUR EMAIL</label>
+            <input type="email" id="contactEmail" class="form-input" placeholder="name@gmail.com" required>
+          </div>
+          <div class="form-group">
+            <label for="contactMessage">MESSAGE</label>
+            <textarea id="contactMessage" class="form-input"
+              placeholder="Tell me about your project or role opportunities..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-submit">Send Message →</button>
+          <div id="formFeedback" class="form-feedback"></div>
+        </form>
+      </div>
 
-    <div class="contact-actions">
-      <a href="mailto:krizzaheart.esperas@gmail.com" class="btn btn-ghost">Direct Email</a>
-      <a href="https://new-digital-portfolio.vercel.app/resume.pdf" class="btn btn-ghost" target="_blank" rel="noopener">Download résumé</a>
+      <div class="contact-actions">
+        <button id="directEmailBtn" class="btn btn-ghost" title="Copy email address">Direct Email</button>
+        <a href="/resume.pdf" class="btn btn-ghost" target="_blank" rel="noopener">Download résumé</a>
+      </div>
+      <div class="foot-links">
+        <a href="https://github.com/krizzaheartesperas" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/krizza-heart-esperas-550ab9368" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:krizzaheart.esperas@gmail.com">Email</a>
+        <a href="tel:+639628329574">+63 962 832 9574</a>
+      </div>
+      <div class="copyright">© 2026 Krizza Heart Esperas.</div>
     </div>
-    <div class="foot-links">
-      <a href="https://github.com/krizzaheartesperas" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://www.linkedin.com/in/krizza-heart-esperas-550ab9368" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="mailto:krizzaheart.esperas@gmail.com">Email</a>
-      <a href="tel:+639917809416">+63 991 780 9416</a>
-    </div>
-    <div class="copyright">© 2026 Krizza Heart Esperas. Built with Node.js, TypeScript & Vercel.</div>
-  </div>
-</section>
+  </section>
+
+  <div id="projectModal" class="project-modal"></div>
 
 </body>
+
 </html>

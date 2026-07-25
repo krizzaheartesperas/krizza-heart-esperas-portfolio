@@ -24,6 +24,7 @@ function initApp(): void {
 
   // Interactive Setup
   setupMobileNav();
+  setupNavScroll();
   setupScrollSpy();
   setupRevealObservers();
   setupProjectFilters();
@@ -31,6 +32,70 @@ function initApp(): void {
   setupDirectEmailBtn();
   setupLightbox();
   setupProjectModals();
+}
+
+function setupNavScroll(): void {
+  const nav = document.getElementById('mainNav');
+  if (!nav) return;
+
+  const onScroll = (): void => {
+    nav.classList.toggle('scrolled', window.scrollY > 24);
+  };
+
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+function setupMobileNav(): void {
+  const navToggle = document.getElementById('navToggle') as HTMLButtonElement | null;
+  const navLinks = document.getElementById('navLinks') as HTMLDivElement | null;
+  const navOverlay = document.getElementById('navOverlay') as HTMLDivElement | null;
+
+  if (!navToggle || !navLinks) return;
+
+  const closeMenu = (): void => {
+    navLinks.classList.remove('open');
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navOverlay?.classList.remove('visible');
+    navOverlay?.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('menu-open');
+  };
+
+  const openMenu = (): void => {
+    navLinks.classList.add('open');
+    navToggle.classList.add('open');
+    navToggle.setAttribute('aria-expanded', 'true');
+    navOverlay?.classList.add('visible');
+    navOverlay?.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('menu-open');
+  };
+
+  navToggle.addEventListener('click', () => {
+    if (navLinks.classList.contains('open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  navOverlay?.addEventListener('click', closeMenu);
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+      closeMenu();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      closeMenu();
+    }
+  });
 }
 
 function setupThemeToggle(): void {
@@ -47,21 +112,6 @@ function setupThemeToggle(): void {
 
       document.documentElement.setAttribute('data-theme', nextTheme);
       localStorage.setItem('portfolio_theme', nextTheme);
-    });
-  }
-}
-
-function setupMobileNav(): void {
-  const navToggle = document.getElementById('navToggle') as HTMLButtonElement | null;
-  const navLinks = document.getElementById('navLinks') as HTMLDivElement | null;
-
-  if (navToggle && navLinks) {
-    navToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
-
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => navLinks.classList.remove('open'));
     });
   }
 }

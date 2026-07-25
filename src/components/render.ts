@@ -55,8 +55,8 @@ export function renderProjects(containerId: string, filterCategory: ProjectCateg
           </div>
           <span class="proj-role">Role: ${proj.role}</span>
           <p class="desc">${proj.description.length > 140 ? proj.description.substring(0, 140) + '...' : proj.description}</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px;">
-            <button class="btn btn-primary view-details-btn" data-project-id="${proj.id}" style="padding: 8px 16px; font-size: 14px;">View Details →</button>
+          <div class="proj-card-actions">
+            <button class="btn btn-primary view-details-btn" data-project-id="${proj.id}">View Details →</button>
             ${proj.award ? `<span class="award-badge">${proj.award}</span>` : ''}
           </div>
         </div>
