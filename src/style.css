@@ -1603,12 +1603,12 @@ a:focus-visible, button:focus-visible {
 .lightbox-modal {
   display: none;
   position: fixed;
-  z-index: 1000;
+  z-index: 19999;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(10, 14, 20, 0.95);
+  background-color: rgba(10, 14, 20, 0.97);
   align-items: center;
   justify-content: center;
   opacity: 0;
@@ -1650,3 +1650,570 @@ a:focus-visible, button:focus-visible {
   color: var(--teal);
 }
 
+/* Folder Tabs for Project Media */
+.proj-media-container {
+  margin-top: 24px;
+}
+
+.folder-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: -1px; /* Overlap border */
+  z-index: 1;
+  position: relative;
+}
+
+.folder-tab {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-bottom: none;
+  padding: 10px 20px;
+  border-radius: 8px 8px 0 0;
+  color: var(--text-muted);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.folder-tab:hover {
+  color: var(--text-body);
+  background: var(--bg-body-alt);
+}
+
+.folder-tab.active {
+  background: var(--bg-card);
+  color: var(--teal);
+  border-bottom: 2px solid var(--bg-card); /* Hide the content border below */
+  margin-bottom: -1px;
+  box-shadow: none;
+  z-index: 2;
+  position: relative;
+}
+
+.folder-content {
+  border: 1px solid var(--line);
+  border-radius: 0 8px 8px 8px;
+  background: var(--bg-card);
+  padding: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.tab-pane {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tab-pane.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Hide main page content when project view is open */
+body.project-view-open > nav,
+body.project-view-open > section {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Project View - Full Page Interface */
+.project-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg);
+  z-index: 9999;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  display: block;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.project-modal.active {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* Project View Header */
+.pv-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 48px;
+  backdrop-filter: blur(10px);
+}
+
+.pv-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--text-body);
+  font-size: 14px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pv-back-btn:hover {
+  color: var(--teal);
+  border-color: var(--teal);
+  background: rgba(94, 234, 212, 0.06);
+}
+
+.pv-header-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Project View Hero */
+.pv-hero {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg) 100%);
+  border-bottom: 1px solid var(--line);
+  padding: 80px 0 64px;
+}
+
+.pv-hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.pv-eyebrow {
+  font-size: 12px;
+  color: var(--teal);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.pv-title {
+  font-size: clamp(32px, 5vw, 52px);
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  line-height: 1.15;
+  margin: 0 0 20px 0;
+  font-weight: 700;
+}
+
+.pv-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.pv-role-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(94, 234, 212, 0.1);
+  border: 1px solid rgba(94, 234, 212, 0.25);
+  color: var(--teal);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.pv-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* Project View Body */
+.pv-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 48px 80px;
+}
+
+.pv-about-section {
+  margin-bottom: 56px;
+}
+
+.pv-section-title {
+  font-size: 22px;
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pv-desc {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text-body);
+  margin: 0 0 24px 0;
+}
+
+.pv-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pv-media-section {
+  margin-top: 0;
+}
+
+.pv-media-section .pv-section-title {
+  margin-bottom: 24px;
+}
+
+
+@media (max-width: 768px) {
+  /* ─── Project View ─── */
+  .pv-header {
+    padding: 12px 20px;
+  }
+  .pv-hero {
+    padding: 48px 0 36px;
+  }
+  .pv-hero-inner,
+  .pv-body {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .pv-title {
+    font-size: 26px;
+  }
+  .pv-body {
+    padding-top: 36px;
+    padding-bottom: 56px;
+  }
+
+  /* ─── General Layout ─── */
+  .wrap {
+    padding: 0 20px;
+  }
+
+  section {
+    padding: 72px 0;
+  }
+
+  /* ─── Navigation ─── */
+  .nav-inner {
+    padding: 0 20px;
+    height: 60px;
+  }
+
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--bg-nav);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--nav-border);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 12px 0 20px;
+    z-index: 99;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 14px 24px;
+    font-size: 15px;
+    border-bottom: 1px solid var(--nav-border);
+  }
+
+  .nav-links a::after {
+    display: none;
+  }
+
+  .nav-links .nav-cta {
+    margin: 12px 24px 0;
+    border: 1px solid var(--teal);
+    text-align: center;
+    padding: 12px 24px;
+    border-radius: 8px;
+  }
+
+  .theme-toggle {
+    margin-left: 4px;
+  }
+
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  /* ─── Hero Section ─── */
+  .hero {
+    padding: 88px 0 64px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    text-align: center;
+  }
+
+  /* Show photo FIRST on mobile */
+  .hero-grid > div:first-child {
+    order: 2;
+  }
+  .hero-photo-wrap {
+    order: 1;
+    justify-self: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 8vw, 38px);
+  }
+
+  .hero .role {
+    font-size: 13px;
+  }
+
+  .hero p.lede {
+    font-size: 15px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .hero-stats {
+    justify-content: center;
+    max-width: 100%;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* ─── Portrait Card ─── */
+  .hero-portrait-card {
+    width: 240px;
+    height: 320px;
+    border-radius: 20px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(47, 182, 163, 0.2);
+  }
+
+  .portrait-name {
+    font-size: 22px;
+  }
+
+  .portrait-role {
+    font-size: 9.5px;
+  }
+
+  /* ─── Section Headings ─── */
+  .section-head {
+    margin-bottom: 36px;
+  }
+
+  .section-head h2 {
+    font-size: clamp(22px, 6vw, 30px);
+  }
+
+  /* ─── Experience ─── */
+  .exp-body {
+    padding: 24px 20px;
+  }
+
+  .exp-role-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .exp-role-row h3 {
+    font-size: 18px;
+  }
+
+  .exp-meta {
+    font-size: 13px;
+  }
+
+  /* ─── Projects Timeline ─── */
+  .timeline {
+    padding-left: 24px;
+  }
+
+  .t-item {
+    gap: 16px;
+  }
+
+  .proj-card {
+    padding: 20px 18px;
+  }
+
+  .proj-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .proj-top h3 {
+    font-size: 17px;
+  }
+
+  /* ─── Project Filters ─── */
+  .project-filters {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    font-size: 12px;
+    padding: 7px 14px;
+  }
+
+  /* ─── Skills ─── */
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .skill-badge {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  /* ─── Credentials ─── */
+  .cred-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cred-card {
+    padding: 24px 20px;
+  }
+
+  /* ─── Certificates ─── */
+  .cert-gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  /* ─── About Section ─── */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .about-grid h2 {
+    font-size: 24px !important;
+  }
+
+  /* ─── Contact ─── */
+  .contact {
+    padding: 72px 0;
+  }
+
+  .contact h2 {
+    font-size: clamp(24px, 7vw, 36px);
+  }
+
+  .contact-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .foot-links {
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    justify-content: center;
+  }
+
+  /* ─── Folder Tabs ─── */
+  .folder-tabs {
+    gap: 4px;
+  }
+
+  .folder-tab {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  /* ─── Buttons ─── */
+  .btn {
+    padding: 11px 20px;
+    font-size: 14px;
+  }
+}
+
+/* ─── Very small screens ─── */
+@media (max-width: 420px) {
+  .hero-portrait-card {
+    width: 200px;
+    height: 270px;
+  }
+
+  .hero h1 {
+    font-size: 26px;
+  }
+
+  .cert-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-stats {
+    gap: 16px;
+  }
+
+  .hero-stats .stat b {
+    font-size: 22px;
+  }
+}
+
+/* ─── Tablet adjustments ─── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero-grid {
+    gap: 40px;
+  }
+
+  .hero-portrait-card {
+    width: 270px;
+    height: 370px;
+  }
+
+  .wrap {
+    padding: 0 40px;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cert-gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

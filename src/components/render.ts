@@ -54,36 +54,10 @@ export function renderProjects(containerId: string, filterCategory: ProjectCateg
             <span class="proj-date mono">${proj.date}</span>
           </div>
           <span class="proj-role">Role: ${proj.role}</span>
-          <p class="desc">${proj.description}</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-            ${proj.award ? `<span class="award-badge" style="margin-top: 14px;">${proj.award}</span>` : ''}
-            ${proj.demoUrl ? `<a href="https://${proj.demoUrl.replace(/^https?:\/\//, '')}" target="_blank" rel="noopener" class="proj-demo-btn">Live Demo ↗</a>` : ''}
-            ${proj.publicationUrl ? `<a href="${proj.publicationUrl}" target="_blank" rel="noopener" class="proj-pub-btn">View Publication ↗</a>` : ''}
-          </div>
-          ${proj.images && proj.images.length > 0 ? `
-            <div class="proj-carousel">
-              <button class="carousel-btn prev" aria-label="Previous image">‹</button>
-              <div class="carousel-track-container">
-                <ul class="carousel-track">
-                  ${proj.images.map((img, idx) => `
-                    <li class="carousel-slide" data-index="${idx}">
-                      <div class="proj-img-wrap">
-                        <img src="${img}" alt="${proj.title} image ${idx + 1}" loading="lazy">
-                      </div>
-                    </li>
-                  `).join('')}
-                </ul>
-              </div>
-              <button class="carousel-btn next" aria-label="Next image">›</button>
-              <div class="carousel-nav">
-                ${proj.images.map((_, idx) => `
-                  <button class="carousel-indicator" data-slide-to="${idx}" aria-label="Go to slide ${idx + 1}"></button>
-                `).join('')}
-              </div>
-            </div>
-          ` : ''}
-          <div class="proj-tags">
-            ${proj.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+          <p class="desc">${proj.description.length > 140 ? proj.description.substring(0, 140) + '...' : proj.description}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px;">
+            <button class="btn btn-primary view-details-btn" data-project-id="${proj.id}" style="padding: 8px 16px; font-size: 14px;">View Details →</button>
+            ${proj.award ? `<span class="award-badge">${proj.award}</span>` : ''}
           </div>
         </div>
       </div>
@@ -192,3 +166,108 @@ export function renderCertificates(containerId: string): void {
     </div>
   `).join('');
 }
+
+export function renderProjectModal(projectId: string): string {
+  const proj = PROJECTS.find(p => p.id === projectId);
+  if (!proj) return '';
+
+  const hasImages = (proj.screenshotImages && proj.screenshotImages.length > 0) || (proj.documentationImages && proj.documentationImages.length > 0);
+  const hasScreenshots = proj.screenshotImages && proj.screenshotImages.length > 0;
+  const hasDocs = proj.documentationImages && proj.documentationImages.length > 0;
+
+  const screenshotSlides = hasScreenshots
+    ? proj.screenshotImages!.map((img, idx) => `
+      <li class="carousel-slide" data-index="${idx}">
+        <div class="proj-img-wrap"><img src="${img}" alt="${proj.title} screenshot ${idx + 1}" loading="lazy"></div>
+      </li>`).join('')
+    : '';
+
+  const screenshotDots = hasScreenshots
+    ? proj.screenshotImages!.map((_, idx) => `<button class="carousel-indicator" data-slide-to="${idx}" aria-label="Go to slide ${idx + 1}"></button>`).join('')
+    : '';
+
+  const docSlides = hasDocs
+    ? proj.documentationImages!.map((img, idx) => `
+      <li class="carousel-slide" data-index="${idx}">
+        <div class="proj-img-wrap"><img src="${img}" alt="${proj.title} documentation ${idx + 1}" loading="lazy"></div>
+      </li>`).join('')
+    : '';
+
+  const docDots = hasDocs
+    ? proj.documentationImages!.map((_, idx) => `<button class="carousel-indicator" data-slide-to="${idx}" aria-label="Go to slide ${idx + 1}"></button>`).join('')
+    : '';
+
+  const screenshotTab = hasScreenshots ? `<button class="folder-tab active" data-target="screenshots-modal-${proj.id}">System Preview</button>` : '';
+  const docTab = hasDocs ? `<button class="folder-tab ${!hasScreenshots ? 'active' : ''}" data-target="documentation-modal-${proj.id}">Documentation</button>` : '';
+
+  const screenshotPane = hasScreenshots ? `
+    <div class="proj-carousel tab-pane active" id="screenshots-modal-${proj.id}">
+      <button class="carousel-btn prev" aria-label="Previous image">&#8249;</button>
+      <div class="carousel-track-container">
+        <ul class="carousel-track">${screenshotSlides}</ul>
+      </div>
+      <button class="carousel-btn next" aria-label="Next image">&#8250;</button>
+      <div class="carousel-nav">${screenshotDots}</div>
+    </div>` : '';
+
+  const docPane = hasDocs ? `
+    <div class="proj-carousel tab-pane ${!hasScreenshots ? 'active' : ''}" id="documentation-modal-${proj.id}">
+      <button class="carousel-btn prev" aria-label="Previous image">&#8249;</button>
+      <div class="carousel-track-container">
+        <ul class="carousel-track">${docSlides}</ul>
+      </div>
+      <button class="carousel-btn next" aria-label="Next image">&#8250;</button>
+      <div class="carousel-nav">${docDots}</div>
+    </div>` : '';
+
+  const mediaSection = hasImages ? `
+    <div class="pv-media-section">
+      <div class="proj-media-container" style="margin-top: 0;">
+        <div class="folder-tabs">${screenshotTab}${docTab}</div>
+        <div class="folder-content">${screenshotPane}${docPane}</div>
+      </div>
+    </div>` : '';
+
+  const linksHtml = [
+    proj.demoUrl ? `<a href="https://${proj.demoUrl.replace(/^https?:\/\//, '')}" target="_blank" rel="noopener" class="btn btn-primary">Live Demo &#8599;</a>` : '',
+    proj.publicationUrl ? `<a href="${proj.publicationUrl}" target="_blank" rel="noopener" class="btn btn-ghost">View Publication &#8599;</a>` : ''
+  ].filter(Boolean).join('');
+
+  const awardHtml = proj.award ? `<span class="award-badge">${proj.award}</span>` : '';
+  const tagsHtml = proj.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+  return `
+    <div class="pv-header">
+      <button class="pv-back-btn" id="pvBackBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Projects
+      </button>
+      <div class="pv-header-meta mono">${proj.date}</div>
+    </div>
+
+    <div class="pv-hero">
+      <div class="pv-hero-inner">
+        <div class="pv-eyebrow mono">Project Detail</div>
+        <h1 class="pv-title">${proj.title}</h1>
+        <div class="pv-meta">
+          <span class="pv-role-badge">Role: ${proj.role}</span>
+          ${awardHtml}
+        </div>
+        ${linksHtml ? `<div class="pv-links">${linksHtml}</div>` : ''}
+      </div>
+    </div>
+
+    <div class="pv-body">
+      <div class="pv-about-section">
+        <h2 class="pv-section-title">About this project</h2>
+        <p class="pv-desc">${proj.description}</p>
+        <div class="pv-tags">${tagsHtml}</div>
+      </div>
+      ${mediaSection}
+    </div>
+  `;
+}
+

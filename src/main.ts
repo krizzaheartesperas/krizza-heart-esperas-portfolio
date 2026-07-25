@@ -5,7 +5,8 @@ import {
   renderProjects,
   renderSkills,
   renderCredentials,
-  renderCertificates
+  renderCertificates,
+  renderProjectModal
 } from './components/render';
 
 function initApp(): void {
@@ -16,6 +17,7 @@ function initApp(): void {
   renderExperience('experienceContainer');
   renderProjects('timeline', 'all');
   initCarousels();
+  setupFolderTabs();
   renderSkills('skillsContainer');
   renderCredentials('credentialsContainer');
   renderCertificates('certificatesContainer');
@@ -28,6 +30,7 @@ function initApp(): void {
   setupContactForm();
   setupDirectEmailBtn();
   setupLightbox();
+  setupProjectModals();
 }
 
 function setupThemeToggle(): void {
@@ -129,6 +132,7 @@ function setupProjectFilters(): void {
       // Re-render project timeline
       renderProjects('timeline', category);
       initCarousels();
+      setupFolderTabs();
 
       // Re-trigger timeline animation
       const timeline = document.getElementById('timeline');
@@ -139,6 +143,91 @@ function setupProjectFilters(): void {
         });
       }
     });
+  });
+}
+
+function setupFolderTabs(): void {
+  const tabContainers = document.querySelectorAll<HTMLElement>('.folder-tabs');
+  
+  tabContainers.forEach(container => {
+    const tabs = container.querySelectorAll<HTMLButtonElement>('.folder-tab');
+    const contentArea = container.nextElementSibling as HTMLElement;
+    if (!contentArea || !contentArea.classList.contains('folder-content')) return;
+    const panes = contentArea.querySelectorAll<HTMLElement>('.tab-pane');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs and panes in this project
+        tabs.forEach(t => t.classList.remove('active'));
+        panes.forEach(p => p.classList.remove('active'));
+
+        // Add active class to clicked tab and its target pane
+        tab.classList.add('active');
+        const targetId = tab.getAttribute('data-target');
+        if (targetId) {
+          const targetPane = document.getElementById(targetId);
+          if (targetPane) {
+            targetPane.classList.add('active');
+            // We might need to adjust carousels here since they were hidden
+            // but the CSS and initCarousels handles most of it
+          }
+        }
+      });
+    });
+  });
+}
+
+function openProjectView(projectId: string): void {
+  const pv = document.getElementById('projectModal');
+  if (!pv) return;
+
+  pv.innerHTML = renderProjectModal(projectId);
+  pv.scrollTop = 0;
+
+  // Hide main page content and show project view
+  document.body.classList.add('project-view-open');
+  document.body.style.overflow = 'hidden';
+
+  requestAnimationFrame(() => {
+    pv.classList.add('active');
+  });
+
+  // Initialize interactivity after render
+  initCarousels();
+  setupFolderTabs();
+
+  // Wire up back button
+  const backBtn = pv.querySelector('#pvBackBtn');
+  if (backBtn) {
+    backBtn.addEventListener('click', closeProjectView);
+  }
+}
+
+function closeProjectView(): void {
+  const pv = document.getElementById('projectModal');
+  if (!pv) return;
+  pv.classList.remove('active');
+  document.body.classList.remove('project-view-open');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    pv.innerHTML = '';
+  }, 450);
+}
+
+function setupProjectModals(): void {
+  // Event delegation — listen for View Details button clicks anywhere in body
+  document.body.addEventListener('click', (e: Event) => {
+    const target = e.target as HTMLElement;
+    const btn = target.closest('.view-details-btn') as HTMLElement | null;
+    if (btn) {
+      const projectId = btn.getAttribute('data-project-id');
+      if (projectId) openProjectView(projectId);
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Escape') closeProjectView();
   });
 }
 

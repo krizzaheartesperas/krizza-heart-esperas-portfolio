@@ -52,11 +52,15 @@ export const PROJECTS: ProjectItem[] = [
     award: '⭐ Featured Project',
     tags: ['JavaScript', 'TypeScript', 'Node.js', 'Supabase', 'Vercel'],
     demoUrl: 'hris-project-beta.vercel.app',
-    images: [
+    screenshotImages: [
       '/projects/hris-1.jpg',
       '/projects/hris-2.jpg',
       '/projects/hris-3.jpg',
       '/projects/hris-4.jpg'
+    ],
+    documentationImages: [
+      '/projects/hris-1.jpg', // Placeholder just so the tab shows up
+      '/projects/hris-2.jpg'
     ]
   },
   {
@@ -69,7 +73,7 @@ export const PROJECTS: ProjectItem[] = [
     award: '⭐ Featured Project',
     tags: ['JavaScript', 'TypeScript', 'Node.js', 'Supabase', 'Vercel'],
     demoUrl: 'https://kling-system.vercel.app/',
-    images: [
+    screenshotImages: [
       '/projects/kling-1.jpg',
       '/projects/kling-2.jpg',
       '/projects/kling-3.jpg'
@@ -84,7 +88,7 @@ export const PROJECTS: ProjectItem[] = [
     description: 'A smart fare system for Daet, Camarines Norte. Contributed to the mobile app and the IoT-enabled fare collection device, automating fare computation, payment processing, and change dispensing — cutting manual transaction errors and improving monitoring for TRU and PSTMU.',
     award: '🏆 Best in Capstone Project',
     tags: ['IoT', 'Mobile App', 'Node.js', 'Fare Automation', 'Hardware Integration'],
-    images: [
+    screenshotImages: [
       '/projects/tricypay-1.jpg',
       '/projects/tricypay-2.jpg',
       '/projects/tricypay-3.jpg',
@@ -101,7 +105,7 @@ export const PROJECTS: ProjectItem[] = [
     award: '⭐ Featured Research',
     tags: ['Agent-Based Modeling', 'GIS Mapping', 'Simulation', 'Data Analysis', 'Public Health'],
     publicationUrl: 'https://zenodo.org/records/14496751',
-    images: [
+    documentationImages: [
       '/projects/tb-sim-1.png',
       '/projects/tb-sim-2.png',
       '/projects/tb-sim-3.png'
@@ -115,7 +119,7 @@ export const PROJECTS: ProjectItem[] = [
     category: 'iot',
     description: 'Built on Raspberry Pi with image processing to classify duck eggs by size, quality, and shape. Automated the sorting process and added real-time monitoring and data logging to support inventory management.',
     tags: ['Raspberry Pi', 'Python', 'Computer Vision', 'IoT', 'Data Logging'],
-    images: [
+    screenshotImages: [
       '/projects/egg-sorting-1.jpg',
       '/projects/egg-sorting-2.jpg'
     ]
@@ -128,7 +132,7 @@ export const PROJECTS: ProjectItem[] = [
     category: 'iot',
     description: 'A miniature model of the Mactan Cebu International Airport that demonstrates a smart airport system using IoT technology. Uses sensors and modules to simulate real airport operations, focusing on safety, efficiency, and energy optimization.',
     tags: ['IoT', 'Sensors', 'Arduino', 'Smart Systems', 'Energy Optimization'],
-    images: [
+    screenshotImages: [
       '/projects/airport-1.jpg',
       '/projects/airport-2.jpg',
       '/projects/airport-3.jpg'

@@ -23,7 +23,8 @@ export interface ProjectItem {
   tags: string[];
   demoUrl?: string;
   publicationUrl?: string;
-  images?: string[];
+  documentationImages?: string[];
+  screenshotImages?: string[];
 }
 
 export interface SkillCategory {
