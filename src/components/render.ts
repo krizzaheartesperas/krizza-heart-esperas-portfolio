@@ -197,7 +197,10 @@ export function renderProjectModal(projectId: string): string {
     ? proj.documentationImages!.map((_, idx) => `<button class="carousel-indicator" data-slide-to="${idx}" aria-label="Go to slide ${idx + 1}"></button>`).join('')
     : '';
 
-  const screenshotTab = hasScreenshots ? `<button class="folder-tab active" data-target="screenshots-modal-${proj.id}">System Preview</button>` : '';
+  const primaryMediaLabel = proj.id === 'tricypay' || proj.id === 'egg-sorting' || proj.id === 'smart-airport'
+    ? 'Documentation'
+    : 'System Preview';
+  const screenshotTab = hasScreenshots ? `<button class="folder-tab active" data-target="screenshots-modal-${proj.id}">${primaryMediaLabel}</button>` : '';
   const docTab = hasDocs ? `<button class="folder-tab ${!hasScreenshots ? 'active' : ''}" data-target="documentation-modal-${proj.id}">Documentation</button>` : '';
 
   const screenshotPane = hasScreenshots ? `
@@ -270,4 +273,3 @@ export function renderProjectModal(projectId: string): string {
     </div>
   `;
 }
-
