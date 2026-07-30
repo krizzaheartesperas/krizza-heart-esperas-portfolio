@@ -294,9 +294,12 @@ function setupProjectModals(): void {
     }
   });
 
-  // Close on Escape key
+  // Close on Escape key (unless lightbox is open)
   document.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Escape') closeProjectView();
+    if (e.key !== 'Escape') return;
+    const lightbox = document.getElementById('lightboxModal');
+    if (lightbox?.classList.contains('active')) return;
+    closeProjectView();
   });
 }
 
@@ -365,35 +368,203 @@ function setupContactForm(): void {
   }
 }
 
+let suppressLightboxClick = false;
+let openProjectLightbox: ((images: LightboxImage[], startIndex: number) => void) | null = null;
+
+interface LightboxImage {
+  src: string;
+  alt: string;
+}
+
+function getCarouselImages(carousel: HTMLElement): LightboxImage[] {
+  return Array.from(carousel.querySelectorAll<HTMLImageElement>('.carousel-slide img')).map(img => ({
+    src: img.src,
+    alt: img.alt
+  }));
+}
+
 function setupLightbox(): void {
   const modal = document.createElement('div');
   modal.id = 'lightboxModal';
   modal.className = 'lightbox-modal';
   modal.innerHTML = `
-    <span class="lightbox-close">&times;</span>
-    <img class="lightbox-content" id="lightboxImg" alt="Enlarged project view">
+    <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+    <button class="lightbox-nav prev" type="button" aria-label="Previous image">&#8249;</button>
+    <div class="lightbox-viewport">
+      <div class="lightbox-track" id="lightboxTrack"></div>
+    </div>
+    <button class="lightbox-nav next" type="button" aria-label="Next image">&#8250;</button>
+    <div class="lightbox-footer">
+      <span class="lightbox-counter mono" id="lightboxCounter"></span>
+      <span class="lightbox-swipe-hint mono">Swipe to browse</span>
+    </div>
   `;
   document.body.appendChild(modal);
 
-  const lightboxImg = modal.querySelector('#lightboxImg') as HTMLImageElement;
+  const track = modal.querySelector('#lightboxTrack') as HTMLElement;
+  const counter = modal.querySelector('#lightboxCounter') as HTMLElement;
+  const prevBtn = modal.querySelector('.lightbox-nav.prev') as HTMLButtonElement;
+  const nextBtn = modal.querySelector('.lightbox-nav.next') as HTMLButtonElement;
+  const viewport = modal.querySelector('.lightbox-viewport') as HTMLElement;
+  const swipeHint = modal.querySelector('.lightbox-swipe-hint') as HTMLElement;
+
+  let images: LightboxImage[] = [];
+  let currentIndex = 0;
+  let isDragging = false;
+  let pointerStartX = 0;
+  let pointerStartY = 0;
+  let pointerId: number | null = null;
+  const SWIPE_THRESHOLD = 48;
+
+  function getSlideWidth(): number {
+    return viewport.offsetWidth;
+  }
+
+  function updateLightbox(index: number, animate = true, offset = 0): void {
+    if (images.length === 0) return;
+
+    currentIndex = (index + images.length) % images.length;
+    track.style.transition = animate
+      ? 'transform 0.42s cubic-bezier(0.25, 1, 0.35, 1)'
+      : 'none';
+
+    const slideW = getSlideWidth();
+    track.style.transform = `translateX(${-(currentIndex * slideW) + offset}px)`;
+    counter.textContent = `${currentIndex + 1} / ${images.length}`;
+
+    const hasMultiple = images.length > 1;
+    prevBtn.hidden = !hasMultiple;
+    nextBtn.hidden = !hasMultiple;
+    counter.hidden = !hasMultiple;
+    swipeHint.hidden = !hasMultiple;
+  }
+
+  function openLightbox(nextImages: LightboxImage[], startIndex: number): void {
+    images = nextImages;
+    currentIndex = Math.min(Math.max(startIndex, 0), Math.max(images.length - 1, 0));
+
+    track.innerHTML = images.map(image => `
+      <div class="lightbox-slide">
+        <img src="${image.src}" alt="${image.alt}">
+      </div>
+    `).join('');
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    updateLightbox(currentIndex, false);
+    requestAnimationFrame(() => updateLightbox(currentIndex, false));
+  }
+
+  function closeLightbox(): void {
+    modal.classList.remove('active');
+    document.body.style.overflow = document.body.classList.contains('project-view-open')
+      ? 'hidden'
+      : '';
+    images = [];
+    track.innerHTML = '';
+  }
+
+  function finishDrag(deltaX: number): void {
+    isDragging = false;
+    pointerId = null;
+
+    if (images.length > 1 && Math.abs(deltaX) > SWIPE_THRESHOLD) {
+      updateLightbox(deltaX > 0 ? currentIndex - 1 : currentIndex + 1);
+    } else {
+      updateLightbox(currentIndex);
+    }
+  }
+
+  openProjectLightbox = openLightbox;
 
   document.body.addEventListener('click', (e: Event) => {
+    if (suppressLightboxClick) return;
+
     const target = e.target as HTMLElement;
     const imgWrap = target.closest('.proj-img-wrap') || target.closest('.cert-img-wrap');
-    if (imgWrap) {
-      const img = imgWrap.querySelector('img');
-      if (img) {
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt;
-        modal.classList.add('active');
-      }
+    if (!imgWrap) return;
+
+    const img = imgWrap.querySelector('img') as HTMLImageElement | null;
+    if (!img) return;
+
+    const carousel = imgWrap.closest('.proj-carousel') as HTMLElement | null;
+    if (carousel) {
+      const gallery = getCarouselImages(carousel);
+      const startIndex = gallery.findIndex(item => item.src === img.src);
+      openLightbox(gallery, startIndex >= 0 ? startIndex : 0);
+      return;
     }
+
+    openLightbox([{ src: img.src, alt: img.alt }], 0);
   });
 
   modal.addEventListener('click', (e: Event) => {
     const target = e.target as HTMLElement;
     if (target.id === 'lightboxModal' || target.classList.contains('lightbox-close')) {
-      modal.classList.remove('active');
+      closeLightbox();
+    }
+  });
+
+  prevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updateLightbox(currentIndex - 1);
+  });
+
+  nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updateLightbox(currentIndex + 1);
+  });
+
+  viewport.addEventListener('pointerdown', (e: PointerEvent) => {
+    if (images.length <= 1) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+    isDragging = true;
+    pointerStartX = e.clientX;
+    pointerStartY = e.clientY;
+    pointerId = e.pointerId;
+    track.style.transition = 'none';
+    viewport.setPointerCapture(e.pointerId);
+  });
+
+  viewport.addEventListener('pointermove', (e: PointerEvent) => {
+    if (!isDragging || pointerId !== e.pointerId) return;
+
+    const deltaX = e.clientX - pointerStartX;
+    const deltaY = e.clientY - pointerStartY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      e.preventDefault();
+      updateLightbox(currentIndex, false, deltaX);
+    }
+  });
+
+  viewport.addEventListener('pointerup', (e: PointerEvent) => {
+    if (!isDragging || pointerId !== e.pointerId) return;
+    viewport.releasePointerCapture(e.pointerId);
+    finishDrag(e.clientX - pointerStartX);
+  });
+
+  viewport.addEventListener('pointercancel', (e: PointerEvent) => {
+    if (!isDragging || pointerId !== e.pointerId) return;
+    finishDrag(0);
+  });
+
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (!modal.classList.contains('active')) return;
+
+    if (e.key === 'Escape') {
+      closeLightbox();
+    } else if (e.key === 'ArrowLeft') {
+      updateLightbox(currentIndex - 1);
+    } else if (e.key === 'ArrowRight') {
+      updateLightbox(currentIndex + 1);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (modal.classList.contains('active')) {
+      updateLightbox(currentIndex, false);
     }
   });
 }
@@ -498,7 +669,6 @@ function initCarousels(): void {
     }
 
     function onPointerDown(e: PointerEvent) {
-      if (slides.length <= 1) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
 
       isDragging = true;
@@ -507,8 +677,11 @@ function initCarousels(): void {
       pointerId = e.pointerId;
       dragOffset = 0;
       stopAutoplay();
-      track!.style.transition = 'none';
-      container!.setPointerCapture(e.pointerId);
+
+      if (slides.length > 1) {
+        track!.style.transition = 'none';
+        container!.setPointerCapture(e.pointerId);
+      }
     }
 
     function onPointerMove(e: PointerEvent) {
@@ -517,7 +690,11 @@ function initCarousels(): void {
       const deltaX = e.clientX - pointerStartX;
       const deltaY = e.clientY - pointerStartY;
 
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (Math.abs(deltaX) > 8 || Math.abs(deltaY) > 8) {
+        suppressLightboxClick = true;
+      }
+
+      if (slides.length > 1 && Math.abs(deltaX) > Math.abs(deltaY)) {
         e.preventDefault();
         dragOffset = deltaX;
         updateCarousel(currentIndex, false, dragOffset);
@@ -526,8 +703,46 @@ function initCarousels(): void {
 
     function onPointerUp(e: PointerEvent) {
       if (!isDragging || pointerId !== e.pointerId) return;
-      container!.releasePointerCapture(e.pointerId);
-      finishDrag(e.clientX - pointerStartX);
+
+      const deltaX = e.clientX - pointerStartX;
+      const deltaY = e.clientY - pointerStartY;
+
+      if (slides.length > 1) {
+        container!.releasePointerCapture(e.pointerId);
+      }
+
+      if (
+        Math.abs(deltaX) <= SWIPE_THRESHOLD &&
+        Math.abs(deltaX) < 10 &&
+        Math.abs(deltaY) < 10
+      ) {
+        isDragging = false;
+        dragOffset = 0;
+        pointerId = null;
+        updateCarousel(currentIndex);
+        resetAutoplay();
+
+        const img = slides[currentIndex]?.querySelector('img') as HTMLImageElement | undefined;
+        if (img && openProjectLightbox) {
+          suppressLightboxClick = true;
+          openProjectLightbox(getCarouselImages(carousel), currentIndex);
+          window.setTimeout(() => {
+            suppressLightboxClick = false;
+          }, 100);
+        }
+        return;
+      }
+
+      if (slides.length > 1) {
+        finishDrag(deltaX);
+      } else {
+        isDragging = false;
+        pointerId = null;
+      }
+
+      window.setTimeout(() => {
+        suppressLightboxClick = false;
+      }, 100);
     }
 
     function onPointerCancel(e: PointerEvent) {
