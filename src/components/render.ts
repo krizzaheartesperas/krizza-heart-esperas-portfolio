@@ -205,22 +205,26 @@ export function renderProjectModal(projectId: string): string {
 
   const screenshotPane = hasScreenshots ? `
     <div class="proj-carousel tab-pane active" id="screenshots-modal-${proj.id}">
-      <button class="carousel-btn prev" aria-label="Previous image">&#8249;</button>
       <div class="carousel-track-container">
         <ul class="carousel-track">${screenshotSlides}</ul>
       </div>
+      ${proj.screenshotImages!.length > 1 ? `
+      <button class="carousel-btn prev" aria-label="Previous image">&#8249;</button>
       <button class="carousel-btn next" aria-label="Next image">&#8250;</button>
       <div class="carousel-nav">${screenshotDots}</div>
+      <p class="carousel-swipe-hint mono">Swipe to browse</p>` : ''}
     </div>` : '';
 
   const docPane = hasDocs ? `
     <div class="proj-carousel tab-pane ${!hasScreenshots ? 'active' : ''}" id="documentation-modal-${proj.id}">
-      <button class="carousel-btn prev" aria-label="Previous image">&#8249;</button>
       <div class="carousel-track-container">
         <ul class="carousel-track">${docSlides}</ul>
       </div>
+      ${proj.documentationImages!.length > 1 ? `
+      <button class="carousel-btn prev" aria-label="Previous image">&#8249;</button>
       <button class="carousel-btn next" aria-label="Next image">&#8250;</button>
       <div class="carousel-nav">${docDots}</div>
+      <p class="carousel-swipe-hint mono">Swipe to browse</p>` : ''}
     </div>` : '';
 
   const mediaSection = hasImages ? `

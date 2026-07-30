@@ -1032,16 +1032,20 @@ section {
 .proj-carousel {
   position: relative;
   width: 100%;
-  margin-top: 24px;
-  margin-bottom: 16px;
-  padding: 12px 0 4px;
+  margin: 0;
+  padding: 0;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
 }
 
 .carousel-track-container {
   width: 100%;
   overflow: hidden;
   position: relative;
-  padding: 16px 0;
+  border-radius: 14px;
+  background: var(--bg-body-alt);
+  border: 1px solid var(--line);
+  min-height: clamp(220px, 52vw, 520px);
 }
 
 .carousel-track {
@@ -1049,43 +1053,58 @@ section {
   list-style: none;
   padding: 0;
   margin: 0;
-  gap: 16px;
-  /* JS sets translateX via inline style */
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  gap: 0;
+  transition: transform 0.42s cubic-bezier(0.25, 1, 0.35, 1);
   will-change: transform;
-  align-items: center;
+  align-items: stretch;
+  height: 100%;
 }
 
 .carousel-slide {
-  flex: 0 0 70%;
-  max-width: 340px;
-  min-width: 240px;
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
-              opacity 0.5s ease,
-              filter 0.5s ease;
-  opacity: 0.45;
-  filter: grayscale(35%) blur(0.8px);
-  transform: scale(0.82);
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.carousel-slide.active {
+  flex: 0 0 100%;
+  min-width: 100%;
   opacity: 1;
-  filter: none;
-  transform: scale(1.06);
-  z-index: 2;
+  transform: none;
   pointer-events: auto;
 }
 
 .carousel-slide.active .proj-img-wrap {
-  border-color: var(--teal);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45), 0 0 22px var(--teal-glow);
+  border-color: rgba(47, 182, 163, 0.45);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
 }
 
-/* Only center card zooms on hover */
 .carousel-slide.active .proj-img-wrap:hover img {
-  transform: scale(1.07);
+  transform: scale(1.02);
+}
+
+.proj-carousel .proj-img-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: unset;
+  min-height: clamp(220px, 52vw, 520px);
+  background: var(--bg-body-alt);
+  border: 1px solid transparent;
+  box-shadow: none;
+  cursor: grab;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 2vw, 16px);
+}
+
+.proj-carousel .proj-img-wrap:active {
+  cursor: grabbing;
+}
+
+.proj-carousel .proj-img-wrap img {
+  width: 100%;
+  height: auto;
+  max-height: clamp(200px, 50vw, 500px);
+  object-fit: contain;
+  border-radius: 8px;
+  transition: transform 0.35s ease;
 }
 
 .proj-img-wrap {
@@ -1111,11 +1130,13 @@ section {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: var(--bg-card);
-  border: 1px solid var(--line);
+  background: rgba(16, 21, 28, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--text-heading);
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1123,54 +1144,80 @@ section {
   cursor: pointer;
   z-index: 10;
   transition: all 0.2s ease;
-  font-size: 18px;
+  font-size: 22px;
   line-height: 1;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .carousel-btn.prev {
-  left: 2px;
+  left: 12px;
 }
 
 .carousel-btn.next {
-  right: 2px;
+  right: 12px;
 }
 
 .carousel-btn:hover {
   background: var(--teal);
   color: #10151c;
   border-color: var(--teal);
-  box-shadow: 0 0 10px var(--teal-glow);
+  box-shadow: 0 0 16px var(--teal-glow);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .carousel-nav {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 14px;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 0 8px;
 }
 
 .carousel-indicator {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: 999px;
   background: var(--line);
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0;
+  flex-shrink: 0;
 }
 
 .carousel-indicator.active {
+  width: 28px;
   background: var(--teal);
-  transform: scale(1.25);
-  box-shadow: 0 0 8px var(--teal-glow);
+  box-shadow: 0 0 10px var(--teal-glow);
 }
 
-@media (max-width: 600px) {
-  .carousel-slide {
-    flex: 0 0 78%;
-    max-width: 300px;
-    min-width: 210px;
+.carousel-swipe-hint {
+  display: none;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .carousel-swipe-hint {
+    display: block;
+  }
+
+  .carousel-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+
+  .carousel-btn.prev {
+    left: 8px;
+  }
+
+  .carousel-btn.next {
+    right: 8px;
   }
 }
 
@@ -1987,21 +2034,23 @@ a:focus-visible, button:focus-visible {
 
   .folder-tab {
     font-size: 12px;
-    padding: 10px 14px;
+    padding: 9px 16px;
     white-space: nowrap;
     flex-shrink: 0;
   }
 
   /* ─── Carousel ─── */
-  .carousel-btn {
-    width: 40px;
-    height: 40px;
+  .carousel-track-container {
+    min-height: clamp(240px, 58vw, 420px);
   }
 
-  .carousel-slide {
-    flex: 0 0 85%;
-    max-width: none;
-    min-width: 0;
+  .proj-carousel .proj-img-wrap {
+    min-height: clamp(240px, 58vw, 420px);
+    padding: 6px;
+  }
+
+  .proj-carousel .proj-img-wrap img {
+    max-height: clamp(220px, 56vw, 400px);
   }
 
   /* ─── Lightbox ─── */
@@ -2099,54 +2148,50 @@ a:focus-visible, button:focus-visible {
 
 /* Folder Tabs for Project Media */
 .proj-media-container {
-  margin-top: 24px;
+  margin-top: 8px;
 }
 
 .folder-tabs {
-  display: flex;
+  display: inline-flex;
   gap: 4px;
-  margin-bottom: -1px; /* Overlap border */
-  z-index: 1;
+  margin-bottom: 16px;
+  padding: 4px;
+  background: var(--bg-body-alt);
+  border: 1px solid var(--line);
+  border-radius: 999px;
   position: relative;
 }
 
 .folder-tab {
-  background: var(--bg-card);
-  border: 1px solid var(--line);
-  border-bottom: none;
+  background: transparent;
+  border: none;
   padding: 10px 20px;
-  border-radius: 8px 8px 0 0;
+  border-radius: 999px;
   color: var(--text-muted);
   font-family: 'Space Grotesk', sans-serif;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1);
+  transition: all 0.25s ease;
+  white-space: nowrap;
 }
 
 .folder-tab:hover {
   color: var(--text-body);
-  background: var(--bg-body-alt);
 }
 
 .folder-tab.active {
   background: var(--bg-card);
   color: var(--teal);
-  border-bottom: 2px solid var(--bg-card); /* Hide the content border below */
-  margin-bottom: -1px;
-  box-shadow: none;
-  z-index: 2;
-  position: relative;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(47, 182, 163, 0.25);
 }
 
 .folder-content {
-  border: 1px solid var(--line);
-  border-radius: 0 8px 8px 8px;
-  background: var(--bg-card);
-  padding: 16px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
   position: relative;
-  z-index: 1;
 }
 
 .tab-pane {
@@ -2821,13 +2866,8 @@ body.project-view-open > section {
   }
 
   .folder-tab {
-    padding: 8px 12px;
-    font-size: 10.8px;
-  }
-
-  .carousel-btn {
-    width: 34px;
-    height: 34px;
+    padding: 8px 14px;
+    font-size: 11px;
   }
 }
 

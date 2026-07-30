@@ -236,8 +236,9 @@ function setupFolderTabs(): void {
           const targetPane = document.getElementById(targetId);
           if (targetPane) {
             targetPane.classList.add('active');
-            // We might need to adjust carousels here since they were hidden
-            // but the CSS and initCarousels handles most of it
+            requestAnimationFrame(() => {
+              window.dispatchEvent(new Event('resize'));
+            });
           }
         }
       });
@@ -401,6 +402,9 @@ function initCarousels(): void {
   const carousels = document.querySelectorAll<HTMLElement>('.proj-carousel');
 
   carousels.forEach(carousel => {
+    if (carousel.dataset.carouselInit === 'true') return;
+    carousel.dataset.carouselInit = 'true';
+
     const track = carousel.querySelector<HTMLElement>('.carousel-track');
     const slides = Array.from(carousel.querySelectorAll<HTMLElement>('.carousel-slide'));
     const indicators = Array.from(carousel.querySelectorAll<HTMLButtonElement>('.carousel-indicator'));
@@ -413,44 +417,43 @@ function initCarousels(): void {
     let currentIndex = 0;
     let autoplayTimer: number | undefined;
     let goingForward = true;
+    let dragOffset = 0;
+    let isDragging = false;
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let pointerId: number | null = null;
+    const SWIPE_THRESHOLD = 48;
 
     function getSlideWidth(): number {
-      const slide = slides[0];
-      const gap = 16;
-      return slide.offsetWidth + gap;
+      return container!.offsetWidth;
     }
 
-    function updateCarousel(index: number, animate = true) {
+    function updateCarousel(index: number, animate = true, offset = 0) {
       currentIndex = (index + slides.length) % slides.length;
 
       if (!animate) {
         track!.style.transition = 'none';
       } else {
-        track!.style.transition = 'transform 0.52s cubic-bezier(0.25, 1, 0.5, 1)';
+        track!.style.transition = 'transform 0.42s cubic-bezier(0.25, 1, 0.35, 1)';
       }
 
-      // Center the active slide in the container
       const slideW = getSlideWidth();
-      const containerW = container!.offsetWidth;
-      // Offset = move track so currentIndex slide sits in center
-      const offset = (containerW / 2) - (currentIndex * slideW) - (slides[0].offsetWidth / 2);
-      track!.style.transform = `translateX(${offset}px)`;
+      const translateX = -(currentIndex * slideW) + offset;
+      track!.style.transform = `translateX(${translateX}px)`;
 
-      // Update classes — only active gets zoom, others none
       slides.forEach((slide, idx) => {
         slide.classList.toggle('active', idx === currentIndex);
       });
 
-      // Update indicators
       indicators.forEach((indicator, idx) => {
         indicator.classList.toggle('active', idx === currentIndex);
       });
     }
 
     function startAutoplay() {
+      if (slides.length <= 1) return;
       stopAutoplay();
       autoplayTimer = window.setInterval(() => {
-        if (slides.length <= 1) return;
         if (goingForward) {
           if (currentIndex === slides.length - 1) {
             goingForward = false;
@@ -466,7 +469,7 @@ function initCarousels(): void {
             updateCarousel(currentIndex - 1);
           }
         }
-      }, 2800);
+      }, 3200);
     }
 
     function stopAutoplay() {
@@ -480,6 +483,62 @@ function initCarousels(): void {
       stopAutoplay();
       startAutoplay();
     }
+
+    function finishDrag(deltaX: number) {
+      isDragging = false;
+      dragOffset = 0;
+      pointerId = null;
+
+      if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+        updateCarousel(deltaX > 0 ? currentIndex - 1 : currentIndex + 1);
+      } else {
+        updateCarousel(currentIndex);
+      }
+      resetAutoplay();
+    }
+
+    function onPointerDown(e: PointerEvent) {
+      if (slides.length <= 1) return;
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+      isDragging = true;
+      pointerStartX = e.clientX;
+      pointerStartY = e.clientY;
+      pointerId = e.pointerId;
+      dragOffset = 0;
+      stopAutoplay();
+      track!.style.transition = 'none';
+      container!.setPointerCapture(e.pointerId);
+    }
+
+    function onPointerMove(e: PointerEvent) {
+      if (!isDragging || pointerId !== e.pointerId) return;
+
+      const deltaX = e.clientX - pointerStartX;
+      const deltaY = e.clientY - pointerStartY;
+
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        e.preventDefault();
+        dragOffset = deltaX;
+        updateCarousel(currentIndex, false, dragOffset);
+      }
+    }
+
+    function onPointerUp(e: PointerEvent) {
+      if (!isDragging || pointerId !== e.pointerId) return;
+      container!.releasePointerCapture(e.pointerId);
+      finishDrag(e.clientX - pointerStartX);
+    }
+
+    function onPointerCancel(e: PointerEvent) {
+      if (!isDragging || pointerId !== e.pointerId) return;
+      finishDrag(0);
+    }
+
+    container.addEventListener('pointerdown', onPointerDown);
+    container.addEventListener('pointermove', onPointerMove);
+    container.addEventListener('pointerup', onPointerUp);
+    container.addEventListener('pointercancel', onPointerCancel);
 
     if (prevBtn) {
       prevBtn.addEventListener('click', (e) => {
@@ -504,24 +563,20 @@ function initCarousels(): void {
       });
     });
 
-    slides.forEach((slide, idx) => {
-      slide.addEventListener('click', (e) => {
-        if (!slide.classList.contains('active')) {
-          e.stopPropagation();
-          updateCarousel(idx);
-          resetAutoplay();
-        }
-      });
-    });
-
     carousel.addEventListener('mouseenter', stopAutoplay);
     carousel.addEventListener('mouseleave', startAutoplay);
 
-    // Initial render — no animation
-    updateCarousel(0, false);
-    // Re-apply with correct offsets after layout settles
-    requestAnimationFrame(() => updateCarousel(0, false));
+    const onResize = (): void => {
+      if (!carousel.isConnected) {
+        window.removeEventListener('resize', onResize);
+        return;
+      }
+      updateCarousel(currentIndex, false);
+    };
+    window.addEventListener('resize', onResize);
 
+    updateCarousel(0, false);
+    requestAnimationFrame(() => updateCarousel(0, false));
     startAutoplay();
   });
 }

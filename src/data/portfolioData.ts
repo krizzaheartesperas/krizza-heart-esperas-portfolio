@@ -244,7 +244,7 @@ export const CERTIFICATES: CertificateItem[] = [
 
 export const EDUCATION = {
   degree: 'BS Information Technology',
-  institution: 'University of Camarines Norte State',
+  institution: 'University of Camarines Norte',
   graduationDate: 'Graduated June 2026',
   summary: [
     'I\'m a BS Information Technology graduate with a genuine pull toward full-stack web development and software engineering. During my internship, I designed, built, and deployed a Human Resource Information System from scratch using TypeScript, Node.js, Supabase, and PostgreSQL — my first real taste of owning a production system end to end.',
