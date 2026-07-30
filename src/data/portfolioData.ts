@@ -13,7 +13,7 @@ export const PERSONAL_INFO = {
   github: 'https://github.com/krizzaheartesperas',
   linkedin: 'https://www.linkedin.com/in/krizza-heart-esperas-550ab9368',
   resumeUrl: '/resume.pdf',
-  avatarUrl: 'https://new-digital-portfolio.vercel.app/profile.jpg',
+  avatarUrl: '/profile.jpg',
   stats: [
     { number: '1', label: 'SOLO INTERNSHIP BUILD' },
     { number: '3', label: 'SHIPPED TEAM PROJECTS' },
