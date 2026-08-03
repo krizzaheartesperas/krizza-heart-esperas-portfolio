@@ -37,7 +37,7 @@ export const EXPERIENCES: ExperienceItem[] = [
       'Deployed and maintained the application on Vercel.',
       'Worked with my supervisor and teammates to gather requirements and ship improvements.'
     ],
-    stack: ['JavaScript', 'TypeScript', 'Node.js', 'Supabase', 'PostgreSQL', 'Vercel']
+    stack: ['React.js', 'Next.js', 'JavaScript', 'TypeScript', 'Node.js', 'Supabase', 'Vercel', 'PostgreSQL', 'REST APIs']
   }
 ];
 
