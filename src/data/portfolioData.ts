@@ -50,7 +50,7 @@ export const PROJECTS: ProjectItem[] = [
     category: 'fullstack',
     description: 'A digital HR platform that brings employee and administrative functions into one system to enhance the management of employee and HR operations. Developed as a modern, integrated system to improve workforce and organizational management, digitizing core HR processes. Deployed and undergoing continuous improvement.',
     award: '⭐ Featured Project',
-    tags: ['JavaScript', 'TypeScript', 'Node.js', 'Supabase', 'Vercel'],
+    tags: ['React.js', 'Next.js', 'JavaScript', 'TypeScript', 'Node.js', 'Supabase', 'Vercel', 'PostgreSQL', 'REST APIs'],
     demoUrl: 'hris-project-beta.vercel.app',
     screenshotImages: [
       '/projects/hris-ss1.jpg',
@@ -73,7 +73,7 @@ export const PROJECTS: ProjectItem[] = [
     category: 'fullstack',
     description: 'A full-stack ordering platform developed to simplify order processing and business management through a modern web application. The system enables customers to place orders seamlessly while providing administrators with tools to manage products, orders, and user accounts. Built with a scalable tech stack and optimized for performance, security, and responsive user experience.',
     award: '⭐ Featured Project',
-    tags: ['JavaScript', 'TypeScript', 'Node.js', 'Supabase', 'Vercel'],
+    tags: ['React.js', 'Next.js', 'JavaScript', 'TypeScript', 'Node.js', 'Supabase', 'Vercel', 'PostgreSQL', 'REST APIs'],
     demoUrl: 'https://kling-system.vercel.app/',
     screenshotImages: [
       '/projects/kling-1.jpg',
