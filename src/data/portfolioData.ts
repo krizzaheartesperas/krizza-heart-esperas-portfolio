@@ -6,7 +6,7 @@ export const PERSONAL_INFO = {
   tagline: 'Building clean, reliable systems — from HRIS to IoT.',
   roleDescription: 'Full-Stack Web Developer · UI/UX Designer',
   bio: 'BS Information Technology graduate who shipped a solo Human Resource Information System during internship, and led UI/UX and IoT work across three team projects. I like clear code, clear interfaces, and systems that don\'t break.',
-  location: 'Talisay, Camarines Norte, PH',
+  location: 'Pioneer St. Barangka Ilaya Mandaluyong City Metro Manila',
   status: 'Open to junior developer roles',
   email: 'krizzaheart.esperas@gmail.com',
   phone: '+63 991 780 9416',
