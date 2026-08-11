@@ -1,3 +1,20 @@
+/* SELF-HOSTED FONTS */
+@font-face {
+  font-family: 'Rubik';
+  src: url('/fonts/Rubik/Rubik-VariableFont_wght.ttf') format('truetype');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('/fonts/Rubik/Rubik-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 300 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* DESIGN SYSTEM & THEME TOKENS */
 :root, [data-theme="dark"] {
   --bg-body: #0d1117;
@@ -7,8 +24,8 @@
   --bg-nav: rgba(13, 17, 23, 0.88);
   --bg-hero: #080b10;
   --bg-contact: #080b10;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Rubik', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Rubik', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
   --text-heading: #f4f5f2;
   --text-body: #cbd5e1;
@@ -82,7 +99,7 @@ body {
   margin: 0;
   background: var(--bg-body);
   color: var(--text-body);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Rubik', system-ui, -apple-system, sans-serif;
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -90,7 +107,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-family: 'Rubik', system-ui, sans-serif;
   color: var(--text-heading);
   margin: 0;
   letter-spacing: -0.01em;
@@ -217,7 +234,7 @@ section {
 }
 
 .brand {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Rubik', sans-serif;
   color: var(--text-heading);
   font-weight: 600;
   font-size: clamp(14px, 3.5vw, 16px);
@@ -275,7 +292,7 @@ section {
 }
 
 .nav-cta {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Rubik', system-ui, -apple-system, sans-serif;
   font-size: 13.5px;
   font-weight: 500;
   color: var(--teal) !important;
@@ -482,7 +499,7 @@ section {
 }
 
 .btn {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-weight: 600;
   font-size: 14.5px;
   padding: 13px 24px;
@@ -550,7 +567,7 @@ section {
 
 .hero-stats .stat b {
   display: block;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 26px;
   color: #f7f7f3;
 }
@@ -606,7 +623,7 @@ section {
 }
 
 .portrait-name {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-weight: 700;
   font-size: 30px;
   line-height: 1.1;
@@ -1496,7 +1513,7 @@ section {
 }
 
 .cert-name {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: var(--text-heading);
@@ -1780,28 +1797,9 @@ a:focus-visible, button:focus-visible {
 
   /* ─── Project View ─── */
   .pv-header {
-    padding: 12px 20px;
-    padding-left: max(20px, var(--safe-left));
-    padding-right: max(20px, var(--safe-right));
-  }
-
-  .pv-hero {
-    padding: 48px 0 36px;
-  }
-
-  .pv-hero-inner,
-  .pv-body {
-    padding-left: max(20px, var(--safe-left));
-    padding-right: max(20px, var(--safe-right));
-  }
-
-  .pv-title {
-    font-size: clamp(24px, 6vw, 32px);
-  }
-
-  .pv-body {
-    padding-top: 36px;
-    padding-bottom: calc(56px + var(--safe-bottom));
+    padding: 10px 16px;
+    padding-left: max(16px, var(--safe-left));
+    padding-right: max(16px, var(--safe-right));
   }
 
   /* ─── Navigation ─── */
@@ -2286,7 +2284,7 @@ a:focus-visible, button:focus-visible {
   padding: 10px 20px;
   border-radius: 999px;
   color: var(--text-muted);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -2497,23 +2495,158 @@ body.project-view-open > section {
 }
 
 @media (max-width: 768px) {
+  /* ─── Project View Back Button ─── */
   .pv-back-btn {
-    font-size: 13px;
-    padding: 10px 14px;
-    min-height: 44px;
+    font-size: 12px;
+    padding: 8px 12px;
+    min-height: 40px;
+    gap: 6px;
+    border-radius: 6px;
+  }
+
+  .pv-back-btn svg {
+    width: 14px;
+    height: 14px;
   }
 
   .pv-header-meta {
     display: none;
   }
 
+  /* ─── Project View Hero ─── */
+  .pv-hero {
+    padding: 36px 0 28px;
+  }
+
+  .pv-hero-inner {
+    padding: 0 max(16px, var(--safe-left));
+  }
+
+  .pv-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  .pv-title {
+    font-size: clamp(20px, 5.5vw, 28px);
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+
+  .pv-meta {
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .pv-role-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 16px;
+  }
+
   .pv-links {
     flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
   }
 
   .pv-links .btn {
     width: 100%;
     justify-content: center;
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+  /* ─── Project View Body ─── */
+  .pv-body {
+    padding: 28px max(16px, var(--safe-left)) 48px;
+  }
+
+  .pv-about-section {
+    margin-bottom: 32px;
+  }
+
+  .pv-section-title {
+    font-size: 17px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+  }
+
+  .pv-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .pv-tags {
+    gap: 6px;
+  }
+
+  .pv-tags .tag {
+    font-size: 10.5px;
+    padding: 4px 8px;
+    border-radius: 5px;
+  }
+
+  /* ─── Project View Media Section ─── */
+  .pv-media-section .pv-section-title {
+    margin-bottom: 16px;
+  }
+
+  .pv-media-section .folder-tabs {
+    gap: 2px;
+    padding: 3px;
+    margin-bottom: 12px;
+  }
+
+  .pv-media-section .folder-tab {
+    font-size: 11px;
+    padding: 7px 12px;
+  }
+
+  .pv-media-section .carousel-track-container {
+    border-radius: 10px;
+    min-height: clamp(180px, 50vw, 320px);
+  }
+
+  .pv-media-section .proj-carousel .proj-img-wrap {
+    min-height: clamp(180px, 50vw, 320px);
+    padding: 4px;
+    border-radius: 10px;
+  }
+
+  .pv-media-section .proj-carousel .proj-img-wrap img {
+    max-height: clamp(160px, 48vw, 300px);
+    border-radius: 6px;
+  }
+
+  .pv-media-section .carousel-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .pv-media-section .carousel-btn.prev {
+    left: 6px;
+  }
+
+  .pv-media-section .carousel-btn.next {
+    right: 6px;
+  }
+
+  .pv-media-section .carousel-nav {
+    margin-top: 10px;
+    gap: 4px;
+  }
+
+  .pv-media-section .carousel-indicator {
+    width: 6px;
+    height: 6px;
+  }
+
+  .pv-media-section .carousel-indicator.active {
+    width: 22px;
   }
 }
 

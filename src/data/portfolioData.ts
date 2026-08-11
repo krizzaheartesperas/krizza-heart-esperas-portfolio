@@ -171,7 +171,7 @@ export const SKILL_GROUPS: SkillCategory[] = [
   },
   {
     title: 'Frontend',
-    tags: ['HTML5', 'CSS3', 'TypeScript', 'Responsive Design', 'Vite', 'DOM API']
+    tags: ['React.js', 'Next.js', 'HTML5', 'CSS3', 'TypeScript', 'Responsive Design', 'Vite', 'DOM API']
   },
   {
     title: 'Backend',
