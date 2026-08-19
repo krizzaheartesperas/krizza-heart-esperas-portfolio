@@ -16,7 +16,6 @@ function initApp(): void {
   // Render Dynamic Sections
   renderExperience('experienceContainer');
   renderProjects('timeline', 'all');
-  showInitialProjectTimeline();
   initCarousels();
   setupFolderTabs();
   renderSkills('skillsContainer');
@@ -167,14 +166,81 @@ function setupRevealObservers(): void {
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            timeline.classList.add('in');
+            animateTimeline(timeline);
+            timelineObserver.unobserve(timeline);
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     );
     timelineObserver.observe(timeline);
   }
+}
+
+/**
+ * Progressively fills the timeline track to each node's position,
+ * revealing each project card as the line reaches it.
+ */
+function animateTimeline(timeline: HTMLElement): void {
+  const fill = timeline.querySelector<HTMLElement>('.timeline-track .fill');
+  const track = timeline.querySelector<HTMLElement>('.timeline-track');
+  const items = timeline.querySelectorAll<HTMLElement>('.t-item:not(.hidden)');
+  if (!fill || !track || items.length === 0) return;
+
+  const trackRect = track.getBoundingClientRect();
+  const trackHeight = trackRect.height;
+
+  // Calculate each node's position as a percentage of the track
+  const nodePositions: number[] = [];
+  items.forEach(item => {
+    const node = item.querySelector<HTMLElement>('.t-node');
+    if (node) {
+      const nodeRect = node.getBoundingClientRect();
+      const nodeCenter = nodeRect.top + nodeRect.height / 2 - trackRect.top;
+      nodePositions.push(Math.min((nodeCenter / trackHeight) * 100, 100));
+    }
+  });
+
+  // Animate fill to each node position sequentially
+  const STEP_DURATION = 350; // ms per step
+  const INITIAL_DELAY = 200;
+
+  // Disable CSS transition so we control it manually per step
+  fill.style.transition = 'none';
+  fill.style.height = '0%';
+
+  items.forEach((item, i) => {
+    const targetPercent = i < nodePositions.length ? nodePositions[i] : 100;
+    const delay = INITIAL_DELAY + i * STEP_DURATION;
+
+    setTimeout(() => {
+      // Animate fill to this node's position
+      fill.style.transition = `height ${STEP_DURATION}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+      fill.style.height = `${targetPercent}%`;
+
+      // Reveal the item
+      item.classList.add('revealed');
+    }, delay);
+  });
+
+  // After all items, extend fill to 100%
+  const finalDelay = INITIAL_DELAY + items.length * STEP_DURATION;
+  setTimeout(() => {
+    fill.style.transition = `height ${STEP_DURATION}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+    fill.style.height = '100%';
+    timeline.classList.add('in');
+  }, finalDelay);
+}
+
+function resetTimelineAnimation(timeline: HTMLElement): void {
+  const fill = timeline.querySelector<HTMLElement>('.timeline-track .fill');
+  const items = timeline.querySelectorAll<HTMLElement>('.t-item');
+  if (fill) {
+    fill.style.transition = 'none';
+    fill.style.height = '0%';
+  }
+  timeline.classList.remove('in');
+  items.forEach(item => item.classList.remove('revealed'));
 }
 
 function setupProjectFilters(): void {
@@ -196,24 +262,14 @@ function setupProjectFilters(): void {
       // Re-trigger timeline animation
       const timeline = document.getElementById('timeline');
       if (timeline) {
-        timeline.classList.remove('in');
+        resetTimelineAnimation(timeline);
         requestAnimationFrame(() => {
-          timeline.classList.add('in');
+          animateTimeline(timeline);
         });
       }
     });
   });
 }
-
-function showInitialProjectTimeline(): void {
-  const timeline = document.getElementById('timeline');
-  if (!timeline) return;
-
-  requestAnimationFrame(() => {
-    timeline.classList.add('in');
-  });
-}
-
 function setupFolderTabs(): void {
   const tabContainers = document.querySelectorAll<HTMLElement>('.folder-tabs');
   

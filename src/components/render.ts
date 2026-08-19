@@ -45,8 +45,8 @@ export function renderProjects(containerId: string, filterCategory: ProjectCateg
 
   container.innerHTML = `
     <div class="timeline-track"><div class="fill"></div></div>
-    ${filteredProjects.map(proj => `
-      <div class="t-item ${proj.award ? 'award' : ''}" data-category="${proj.category}">
+    ${filteredProjects.map((proj, i) => `
+      <div class="t-item ${proj.award ? 'award' : ''}" data-category="${proj.category}" style="--i: ${i}">
         <div class="t-node"></div>
         <div class="proj-card">
           <div class="proj-top">
