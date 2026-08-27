@@ -241,6 +241,13 @@ section {
   flex-shrink: 1;
 }
 
+.brand-logo {
+  height: 52px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -576,8 +583,7 @@ section {
 }
 
 .hero-role-line::before {
-  content: '• ';
-  color: #6b7280;
+  content: none;
 }
 
 .hero-meta-grid {
@@ -3072,7 +3078,11 @@ body.project-view-open > section {
 
   .brand {
     font-size: 13.5px;
-    max-width: calc(100vw - 92px);
+    max-width: none;
+  }
+
+  .brand-logo {
+    height: 44px;
   }
 
   .nav-toggle {
