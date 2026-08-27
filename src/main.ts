@@ -32,6 +32,25 @@ function initApp(): void {
   setupDirectEmailBtn();
   setupLightbox();
   setupProjectModals();
+  setupHeroClock();
+}
+
+function setupHeroClock(): void {
+  const clockEl = document.getElementById('heroClock');
+  if (!clockEl) return;
+
+  const updateClock = (): void => {
+    const time = new Date().toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'Asia/Manila',
+    });
+    clockEl.textContent = `${time} // GMT+8`;
+  };
+
+  updateClock();
+  setInterval(updateClock, 1000);
 }
 
 function setupNavScroll(): void {

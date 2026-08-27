@@ -188,6 +188,10 @@ export const SKILL_GROUPS: SkillCategory[] = [
   {
     title: 'Design',
     tags: ['Figma', 'Canva', 'UI/UX Design', 'Wireframing', 'Prototyping']
+  },
+  {
+    title: 'AI Tools',
+    tags: ['ChatGPT', 'Claude', 'Gemini', 'Cursor']
   }
 ];
 

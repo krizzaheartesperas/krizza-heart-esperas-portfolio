@@ -100,37 +100,111 @@ const SKILL_ICONS: Record<string, string> = {
   'UI/UX Design': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>`,
   'Wireframing': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`,
   'Prototyping': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
+  // AI Tools
+  'ChatGPT': `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.938 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .742 7.097 5.98 5.98 0 0 0 .511 4.936 6.051 6.051 0 0 0 6.515 2.898A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.163a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg>`,
+  'Claude': `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-.2 0-.4.05-.58.14L3.1 6.42A1.2 1.2 0 0 0 2.3 7.5v9a1.2 1.2 0 0 0 .8 1.08l8.32 4.28c.36.19.8.19 1.16 0l8.32-4.28a1.2 1.2 0 0 0 .8-1.08v-9a1.2 1.2 0 0 0-.8-1.08L12.58 2.14A1.1 1.1 0 0 0 12 2zm0 2.18 6.9 3.55L12 11.28 5.1 7.73 12 4.18zM4.5 8.98 11 12.3v7.02l-6.5-3.34V8.98zm15 0v7l-6.5 3.34v-7.02l6.5-3.32z"/></svg>`,
+  'Gemini': `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.09 6.26L20 9.27l-4.45 4.7L16.91 20 12 16.9 7.09 20l1.36-6.03L4 9.27l5.91-1.01L12 2z"/></svg>`,
+  'Cursor': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/><path d="M13 13l6 6"/></svg>`,
 };
 
-const CATEGORY_ICONS: Record<string, string> = {
-  'Languages': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
-  'Frontend': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>`,
-  'Backend': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>`,
-  'Database': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
-  'Tools & Cloud': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
-  'Design': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>`,
+const DEFAULT_SKILL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+
+const ROW_META: Record<string, { icon: string; desc: string; modifier: string }> = {
+  Frontend: {
+    modifier: 'frontend',
+    desc: 'UI & client-side',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>`,
+  },
+  Backend: {
+    modifier: 'backend',
+    desc: 'APIs & server logic',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>`,
+  },
+  'AI Tools': {
+    modifier: 'ai',
+    desc: 'Assistants & coding agents',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg>`,
+  },
+  Other: {
+    modifier: 'other',
+    desc: 'Tools, data & design',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
+  },
 };
+
+function renderSkillBadge(tag: string): string {
+  return `
+    <span class="skill-badge">
+      <span class="skill-badge-icon">${SKILL_ICONS[tag] ?? DEFAULT_SKILL_ICON}</span>
+      <span class="skill-badge-label">${tag}</span>
+    </span>
+  `;
+}
+
+function renderSkillGroupCluster(title: string, tags: string[]): string {
+  return `
+    <div class="skills-marquee-cluster">
+      <span class="skills-marquee-subcat">${title}</span>
+      <div class="skills-marquee-cluster-tags">
+        ${tags.map(renderSkillBadge).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderSkillsMarqueeRow(label: string, content: string, reverse = false): string {
+  const meta = ROW_META[label];
+
+  return `
+    <div class="skills-marquee-row skills-marquee-row--${meta.modifier}${reverse ? ' skills-marquee-row--reverse' : ''}">
+      <div class="skills-marquee-head">
+        <span class="skills-marquee-icon">${meta.icon}</span>
+        <div class="skills-marquee-meta">
+          <span class="skills-marquee-label">${label}</span>
+          <span class="skills-marquee-desc">${meta.desc}</span>
+        </div>
+      </div>
+      <div class="skills-marquee-scroll">
+        <div class="skills-marquee-track">
+          <div class="skills-marquee-set">${content}</div>
+          <div class="skills-marquee-set" aria-hidden="true">${content}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderOtherRowContent(): string {
+  const otherGroups = SKILL_GROUPS.filter(
+    group => group.title !== 'Frontend' && group.title !== 'Backend' && group.title !== 'AI Tools'
+  );
+
+  return otherGroups
+    .map((group, index) => {
+      const cluster = renderSkillGroupCluster(group.title, group.tags);
+      return index === 0 ? cluster : `<span class="skills-marquee-sep" aria-hidden="true"></span>${cluster}`;
+    })
+    .join('');
+}
 
 export function renderSkills(containerId: string): void {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  container.innerHTML = SKILL_GROUPS.map(group => `
-    <div class="skill-card reveal">
-      <div class="skill-card-header">
-        <span class="skill-cat-icon">${CATEGORY_ICONS[group.title] ?? ''}</span>
-        <span class="skill-cat-title">${group.title}</span>
-      </div>
-      <div class="skill-tags">
-        ${group.tags.map(tag => `
-          <span class="skill-badge">
-            <span class="skill-badge-icon">${SKILL_ICONS[tag] ?? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`}</span>
-            <span class="skill-badge-label">${tag}</span>
-          </span>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
+  const frontendGroup = SKILL_GROUPS.find(group => group.title === 'Frontend');
+  const backendGroup = SKILL_GROUPS.find(group => group.title === 'Backend');
+  const aiGroup = SKILL_GROUPS.find(group => group.title === 'AI Tools');
+
+  const frontendContent = frontendGroup?.tags.map(renderSkillBadge).join('') ?? '';
+  const backendContent = backendGroup?.tags.map(renderSkillBadge).join('') ?? '';
+  const aiContent = aiGroup?.tags.map(renderSkillBadge).join('') ?? '';
+
+  container.innerHTML = `
+    ${renderSkillsMarqueeRow('Frontend', frontendContent)}
+    ${renderSkillsMarqueeRow('Backend', backendContent, true)}
+    ${renderSkillsMarqueeRow('AI Tools', aiContent)}
+    ${renderSkillsMarqueeRow('Other', renderOtherRowContent(), true)}
+  `;
 }
 
 export function renderCredentials(containerId: string): void {
