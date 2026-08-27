@@ -3097,8 +3097,8 @@ body.project-view-open > section {
   }
 
   .hero-cover-inner {
-    padding-top: calc(var(--nav-height) + var(--safe-top) + 12px);
-    padding-bottom: 20px;
+    padding-top: calc(var(--nav-height) + var(--safe-top) + 32px);
+    padding-bottom: 60px;
   }
 
   .hero-cover-hello {
