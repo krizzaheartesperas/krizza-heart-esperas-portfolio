@@ -41,6 +41,8 @@ const RECRUITER_QUESTIONS = [
 
 const EMAIL_ADDRESS = 'krizzaheart.esperas@gmail.com';
 
+const CHATBOT_ICON_SRC = '/chatbot-icon.jpg';
+
 const NAV_RULES: { pattern: RegExp; action: NavAction }[] = [
   { pattern: /\bproject/i, action: { label: 'View My Projects', href: '#projects' } },
   { pattern: /internship|hris|highly succeed/i, action: { label: 'View My Experience', href: '#experience' } },
@@ -80,14 +82,7 @@ export function initChatbot(): void {
   root.className = 'chatbot-root';
   root.innerHTML = `
     <button type="button" class="chatbot-toggle" id="chatbotToggle" aria-haspopup="dialog" aria-expanded="false" aria-controls="chatbotPanel" aria-label="Open AI Portfolio Assistant">
-      <svg class="chatbot-icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="12" y1="2.4" x2="12" y2="5.4"/>
-        <circle cx="12" cy="1.5" r="0.9" fill="currentColor" stroke="none"/>
-        <rect x="4.5" y="5.4" width="15" height="13.2" rx="5"/>
-        <circle cx="9.3" cy="12" r="1.15" fill="currentColor" stroke="none"/>
-        <circle cx="14.7" cy="12" r="1.15" fill="currentColor" stroke="none"/>
-        <path d="M9.6 15.3c.7.6 1.5.9 2.4.9s1.7-.3 2.4-.9"/>
-      </svg>
+      <img class="chatbot-icon-chat" src="${CHATBOT_ICON_SRC}" alt="" aria-hidden="true" />
       <svg class="chatbot-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
@@ -96,7 +91,10 @@ export function initChatbot(): void {
     <div class="chatbot-panel" id="chatbotPanel" role="dialog" aria-modal="false" aria-labelledby="chatbotTitle" hidden>
       <div class="chatbot-header">
         <div class="chatbot-header-info">
-          <span class="chatbot-status-dot" aria-hidden="true"></span>
+          <span class="chatbot-avatar">
+            <img src="${CHATBOT_ICON_SRC}" alt="" />
+            <span class="chatbot-status-dot" aria-hidden="true"></span>
+          </span>
           <div class="chatbot-header-text">
             <h2 id="chatbotTitle">AI Portfolio Assistant</h2>
             <span>Online &middot; Ask me anything</span>
@@ -317,13 +315,26 @@ function updateContextBanner(): void {
   });
 }
 
+function createAvatarEl(): HTMLSpanElement {
+  const avatar = document.createElement('span');
+  avatar.className = 'chatbot-avatar chatbot-avatar-msg';
+  avatar.innerHTML = `<img src="${CHATBOT_ICON_SRC}" alt="" />`;
+  return avatar;
+}
+
 function renderEmptyState(): void {
+  const row = document.createElement('div');
+  row.className = 'chatbot-msg-row';
+  row.appendChild(createAvatarEl());
+
   const greetingEl = document.createElement('div');
   greetingEl.className = 'chatbot-greeting';
   greetingEl.textContent = activeProjectName
     ? `What would you like to know about the ${activeProjectName}?`
     : GREETING;
-  messagesEl.appendChild(greetingEl);
+  row.appendChild(greetingEl);
+
+  messagesEl.appendChild(row);
   renderQuickQuestions();
 }
 
@@ -436,18 +447,32 @@ function addMessage(message: ChatMessage): void {
     el.textContent = message.content;
   }
 
-  messagesEl.appendChild(el);
+  if (message.role === 'assistant') {
+    const row = document.createElement('div');
+    row.className = 'chatbot-msg-row';
+    row.appendChild(createAvatarEl());
+    row.appendChild(el);
+    messagesEl.appendChild(row);
+  } else {
+    messagesEl.appendChild(el);
+  }
   scrollToBottom();
 }
 
 function renderTypingIndicator(): HTMLDivElement {
+  const row = document.createElement('div');
+  row.className = 'chatbot-msg-row';
+  row.appendChild(createAvatarEl());
+
   const el = document.createElement('div');
   el.className = 'chatbot-typing';
   el.setAttribute('aria-label', 'Assistant is typing');
   el.innerHTML = '<span></span><span></span><span></span>';
-  messagesEl.appendChild(el);
+  row.appendChild(el);
+
+  messagesEl.appendChild(row);
   scrollToBottom();
-  return el;
+  return row;
 }
 
 function renderNavActions(userText: string, replyText: string): void {

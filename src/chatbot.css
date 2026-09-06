@@ -23,6 +23,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  overflow: hidden;
   box-shadow: 0 10px 30px var(--teal-glow);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, background 0.2s ease;
 }
@@ -41,6 +42,18 @@
   width: 24px;
   height: 24px;
   position: absolute;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* The launcher artwork fills the whole circular button — it carries its
+   own background, so it IS the button face, not a small icon on top of one. */
+.chatbot-toggle .chatbot-icon-chat {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
@@ -190,6 +203,24 @@
   min-width: 0;
 }
 
+.chatbot-avatar {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+}
+
+.chatbot-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
 .chatbot-status-dot {
   width: 9px;
   height: 9px;
@@ -198,6 +229,15 @@
   box-shadow: 0 0 0 3px var(--teal-dim);
   flex-shrink: 0;
   animation: chatbot-pulse 2.4s ease-in-out infinite;
+}
+
+/* Inside the header avatar, the dot becomes a small "online" badge
+   pinned to its corner instead of sitting inline next to the title. */
+.chatbot-avatar .chatbot-status-dot {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  box-shadow: 0 0 0 2px var(--bg-body-alt);
 }
 
 @keyframes chatbot-pulse {
@@ -388,6 +428,44 @@
   text-underline-offset: 2px;
 }
 
+/* Assistant messages (and the typing indicator/greeting) are wrapped in a
+   row with the robot avatar; the bubble inside no longer needs its own
+   alignment/width cap since the row already handles both. */
+.chatbot-msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  align-self: flex-start;
+  max-width: 88%;
+}
+
+.chatbot-msg-row .chatbot-msg,
+.chatbot-msg-row .chatbot-greeting {
+  align-self: auto;
+  max-width: 100%;
+}
+
+.chatbot-avatar-msg {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+}
+
+.chatbot-avatar-msg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.chatbot-msg-row .chatbot-typing {
+  align-self: auto;
+}
+
 .chatbot-typing {
   align-self: flex-start;
   display: inline-flex;
@@ -559,6 +637,7 @@
   .chatbot-panel,
   .chatbot-toggle,
   .chatbot-toggle svg,
+  .chatbot-toggle img,
   .chatbot-msg,
   .chatbot-status-dot,
   .chatbot-typing span {
