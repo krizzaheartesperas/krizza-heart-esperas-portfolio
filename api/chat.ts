@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import OpenAI from 'openai';
-import { SYSTEM_PROMPT } from './lib/knowledge';
-import { isRateLimited } from './lib/rateLimit';
+import { SYSTEM_PROMPT } from './lib/knowledge.js';
+import { isRateLimited } from './lib/rateLimit.js';
 
 export const config = {
   maxDuration: 20,
