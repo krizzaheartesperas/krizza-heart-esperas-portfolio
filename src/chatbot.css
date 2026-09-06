@@ -59,6 +59,16 @@
   transform: scale(1) rotate(0deg);
 }
 
+/* Subtle desktop hover: the robot (or the close X, once open) nudges up
+   in scale — kept small so it reads as a friendly wiggle, not a jump. */
+.chatbot-toggle:hover .chatbot-icon-chat {
+  transform: scale(1.08);
+}
+
+.chatbot-toggle.open:hover .chatbot-icon-close {
+  transform: scale(1.08) rotate(0deg);
+}
+
 .chatbot-toggle-badge {
   position: absolute;
   top: -2px;
@@ -548,6 +558,7 @@
 @media (prefers-reduced-motion: reduce) {
   .chatbot-panel,
   .chatbot-toggle,
+  .chatbot-toggle svg,
   .chatbot-msg,
   .chatbot-status-dot,
   .chatbot-typing span {
