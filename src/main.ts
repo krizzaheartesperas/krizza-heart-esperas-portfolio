@@ -8,6 +8,7 @@ import {
   renderCertificates,
   renderProjectModal
 } from './components/render';
+import { initChatbot } from './components/chatbot';
 
 function initApp(): void {
   // Theme Setup
@@ -33,6 +34,7 @@ function initApp(): void {
   setupLightbox();
   setupProjectModals();
   setupHeroClock();
+  initChatbot();
 }
 
 function setupHeroClock(): void {
