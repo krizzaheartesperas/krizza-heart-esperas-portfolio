@@ -395,6 +395,7 @@ async function sendMessage(text: string): Promise<void> {
   sendBtn.disabled = true;
   input.disabled = true;
   const typingEl = renderTypingIndicator();
+  let serverErrorMessage: string | undefined;
 
   try {
     const history = messages
@@ -415,7 +416,8 @@ async function sendMessage(text: string): Promise<void> {
     const data = await response.json().catch(() => null);
 
     if (!response.ok || !data?.reply) {
-      throw new Error(data?.error || 'Request failed');
+      serverErrorMessage = typeof data?.error === 'string' ? data.error : undefined;
+      throw new Error(serverErrorMessage || 'Request failed');
     }
 
     typingEl.remove();
@@ -427,6 +429,7 @@ async function sendMessage(text: string): Promise<void> {
     addMessage({
       role: 'assistant',
       content:
+        serverErrorMessage ||
         "Sorry, I'm having trouble responding right now. Please try again or use the Contact section to reach me directly.",
       isError: true,
     });

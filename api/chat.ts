@@ -16,6 +16,9 @@ const MAX_ATTEMPTS = 2;
 const FALLBACK_MESSAGE =
   "Sorry, I'm having trouble responding right now. Please try again or use the Contact section to reach me directly.";
 
+const RATE_LIMIT_MESSAGE =
+  "I'm getting a lot of questions right now and I'm briefly at capacity. Please try again in a few minutes, or use the Contact section to reach me directly.";
+
 interface ChatTurn {
   role: 'user' | 'assistant';
   content: string;
@@ -170,6 +173,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(200).json({ reply });
   } catch (error) {
     console.error('Chat API error:', error);
+    if (error instanceof APIError && error.status === 429) {
+      res.status(429).json({ error: RATE_LIMIT_MESSAGE });
+      return;
+    }
     res.status(502).json({ error: FALLBACK_MESSAGE });
   }
 }
