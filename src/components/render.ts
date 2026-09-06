@@ -313,7 +313,8 @@ export function renderProjectModal(projectId: string): string {
 
   const linksHtml = [
     proj.demoUrl ? `<a href="https://${proj.demoUrl.replace(/^https?:\/\//, '')}" target="_blank" rel="noopener" class="btn btn-primary">Live Demo &#8599;</a>` : '',
-    proj.publicationUrl ? `<a href="${proj.publicationUrl}" target="_blank" rel="noopener" class="btn btn-ghost">View Publication &#8599;</a>` : ''
+    proj.publicationUrl ? `<a href="${proj.publicationUrl}" target="_blank" rel="noopener" class="btn btn-ghost">View Publication &#8599;</a>` : '',
+    `<button type="button" class="btn btn-ghost ask-ai-project-btn" data-project-id="${proj.id}" data-project-name="${proj.title}">Ask AI about this project</button>`
   ].filter(Boolean).join('');
 
   const awardHtml = proj.award ? `<span class="award-badge">${proj.award}</span>` : '';

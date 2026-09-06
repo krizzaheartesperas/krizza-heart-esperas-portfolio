@@ -67,7 +67,7 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: 'kling-ordering-system',
     title: 'Kling Ordering System – Digital Ordering & Management Platform',
-    date: 'Feb – May 2026',
+    date: 'June – July 2026',
     role: 'Full Stack Developer (Team of 2)',
     category: 'fullstack',
     description: 'A full-stack ordering platform developed to simplify order processing and business management through a modern web application. The system enables customers to place orders seamlessly while providing administrators with tools to manage products, orders, and user accounts. Built with a scalable tech stack and optimized for performance, security, and responsive user experience.',

@@ -1,6 +1,13 @@
 /* AI PORTFOLIO ASSISTANT — reuses the site's existing design tokens
    (see :root in style.css) so it matches both themes automatically. */
 
+/* Several elements below set their own `display` unconditionally, which
+   otherwise beats the `hidden` attribute's default styling regardless of
+   selector specificity — this restores it, scoped to the widget only. */
+.chatbot-root [hidden] {
+  display: none !important;
+}
+
 .chatbot-toggle {
   position: fixed;
   right: max(20px, var(--safe-right));
@@ -197,6 +204,54 @@
   height: 17px;
 }
 
+.chatbot-icon-btn.active {
+  background: var(--teal-dim);
+  color: var(--teal);
+}
+
+.chatbot-context-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--text-body);
+  background: var(--teal-dim);
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.chatbot-context-banner strong {
+  color: var(--text-heading);
+}
+
+.chatbot-context-clear {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.chatbot-context-clear:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--text-heading);
+}
+
+.chatbot-context-clear:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
 .chatbot-messages {
   flex: 1;
   overflow-y: auto;
@@ -326,6 +381,12 @@
   align-items: center;
   gap: 4px;
   transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.chatbot-action-btn.copied {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-dim);
 }
 
 .chatbot-action-btn:hover {

@@ -8,12 +8,13 @@ interface ChatMessage {
 
 interface NavAction {
   label: string;
-  href: string;
+  href?: string;
   external?: boolean;
+  copyValue?: string;
 }
 
 const GREETING =
-  "Hi! I'm Krizza's AI Portfolio Assistant. I can tell you about Krizza's skills, projects, experience, education, and technical background. What would you like to know?";
+  "Hi! I'm Krizza's AI Portfolio Assistant. I can tell you about Krizza's background, education, skills, projects, experience, and technical background. What would you like to know?";
 
 const QUICK_QUESTIONS = [
   'Tell me about Krizza',
@@ -22,17 +23,33 @@ const QUICK_QUESTIONS = [
   'Internship experience',
   'AI & automation experience',
   'QA experience',
+  'Education',
   'Contact information',
+  'GitHub',
 ];
+
+const RECRUITER_QUESTIONS = [
+  "What are Krizza's strongest technical skills?",
+  'What full-stack experience does she have?',
+  'What projects demonstrate her technical ability?',
+  'What AI experience does she have?',
+  'What database technologies has she used?',
+  'What did she do during her internship?',
+  'Where can I find her resume?',
+  'How can I contact her?',
+];
+
+const EMAIL_ADDRESS = 'krizzaheart.esperas@gmail.com';
 
 const NAV_RULES: { pattern: RegExp; action: NavAction }[] = [
   { pattern: /\bproject/i, action: { label: 'View Projects', href: '#projects' } },
   { pattern: /internship|hris|highly succeed/i, action: { label: 'View Experience', href: '#experience' } },
   { pattern: /skill|technolog|stack/i, action: { label: 'View Skills', href: '#skills' } },
   { pattern: /resume|cv\b/i, action: { label: 'View Resume', href: '/resume.pdf', external: true } },
-  { pattern: /contact|reach|hire|email address|get in touch/i, action: { label: 'Contact Krizza', href: '#contact' } },
+  { pattern: /\bemail\b/i, action: { label: 'Email Krizza', copyValue: EMAIL_ADDRESS } },
+  { pattern: /contact|reach|hire|get in touch/i, action: { label: 'Contact Krizza', href: '#contact' } },
   { pattern: /award|credential|certificat/i, action: { label: 'View Credentials', href: '#credentials' } },
-  { pattern: /education|degree|university|graduat/i, action: { label: 'View About', href: '#about' } },
+  { pattern: /education|degree|university|graduat|gwa/i, action: { label: 'View About', href: '#about' } },
   { pattern: /github/i, action: { label: 'View GitHub', href: 'https://github.com/krizzaheartesperas', external: true } },
   { pattern: /linkedin/i, action: { label: 'View LinkedIn', href: 'https://www.linkedin.com/in/krizza-heart-esperas-550ab9368', external: true } },
 ];
@@ -43,11 +60,16 @@ const MAX_HISTORY_SENT = 10;
 const messages: ChatMessage[] = [];
 let isSending = false;
 let hasOpenedBefore = false;
+let recruiterMode = false;
+let activeProjectId: string | undefined;
+let activeProjectName: string | undefined;
 
 let toggleBtn: HTMLButtonElement;
 let panel: HTMLDivElement;
 let messagesEl: HTMLDivElement;
 let quickQuestionsEl: HTMLDivElement;
+let contextBannerEl: HTMLDivElement;
+let recruiterBtn: HTMLButtonElement;
 let form: HTMLFormElement;
 let input: HTMLTextAreaElement;
 let sendBtn: HTMLButtonElement;
@@ -75,6 +97,9 @@ export function initChatbot(): void {
           </div>
         </div>
         <div class="chatbot-header-actions">
+          <button type="button" class="chatbot-icon-btn" id="chatbotRecruiter" aria-label="Toggle recruiter mode" aria-pressed="false" title="Recruiter mode">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </button>
           <button type="button" class="chatbot-icon-btn" id="chatbotReset" aria-label="Start new conversation" title="New conversation">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-8.14L1 10"/></svg>
           </button>
@@ -83,6 +108,8 @@ export function initChatbot(): void {
           </button>
         </div>
       </div>
+
+      <div class="chatbot-context-banner" id="chatbotContextBanner" hidden></div>
 
       <div class="chatbot-messages" id="chatbotMessages" role="log" aria-live="polite"></div>
 
@@ -109,6 +136,8 @@ export function initChatbot(): void {
   panel = root.querySelector('#chatbotPanel') as HTMLDivElement;
   messagesEl = root.querySelector('#chatbotMessages') as HTMLDivElement;
   quickQuestionsEl = root.querySelector('#chatbotQuickQuestions') as HTMLDivElement;
+  contextBannerEl = root.querySelector('#chatbotContextBanner') as HTMLDivElement;
+  recruiterBtn = root.querySelector('#chatbotRecruiter') as HTMLButtonElement;
   form = root.querySelector('#chatbotForm') as HTMLFormElement;
   input = root.querySelector('#chatbotInput') as HTMLTextAreaElement;
   sendBtn = root.querySelector('#chatbotSend') as HTMLButtonElement;
@@ -119,7 +148,8 @@ export function initChatbot(): void {
     panel.classList.contains('open') ? closeChat() : openChat();
   });
   closeBtn.addEventListener('click', closeChat);
-  resetBtn.addEventListener('click', resetConversation);
+  resetBtn.addEventListener('click', () => resetConversation());
+  recruiterBtn.addEventListener('click', toggleRecruiterMode);
 
   form.addEventListener('submit', (e: Event) => {
     e.preventDefault();
@@ -145,6 +175,25 @@ export function initChatbot(): void {
   });
 
   renderEmptyState();
+}
+
+/**
+ * Entry point for a project's "Ask AI about this project" button (wired up
+ * in main.ts). Opens the assistant scoped to that project: fresh
+ * conversation, a project-specific greeting, and every message tagged with
+ * `projectContext` so the backend prioritizes that project's knowledge.
+ */
+export function openChatWithProject(projectId: string, projectName: string): void {
+  activeProjectId = projectId;
+  activeProjectName = projectName;
+  recruiterMode = false;
+  recruiterBtn.classList.remove('active');
+  recruiterBtn.setAttribute('aria-pressed', 'false');
+  messages.length = 0;
+  messagesEl.innerHTML = '';
+  updateContextBanner();
+  renderEmptyState();
+  openChat();
 }
 
 function openChat(): void {
@@ -173,6 +222,9 @@ function closeChat(): void {
 }
 
 function resetConversation(): void {
+  activeProjectId = undefined;
+  activeProjectName = undefined;
+  updateContextBanner();
   messages.length = 0;
   messagesEl.innerHTML = '';
   renderEmptyState();
@@ -182,10 +234,47 @@ function resetConversation(): void {
   input.focus();
 }
 
+function toggleRecruiterMode(): void {
+  recruiterMode = !recruiterMode;
+  recruiterBtn.classList.toggle('active', recruiterMode);
+  recruiterBtn.setAttribute('aria-pressed', String(recruiterMode));
+  recruiterBtn.title = recruiterMode ? 'Recruiter mode: on' : 'Recruiter mode';
+
+  const subtitle = panel.querySelector('.chatbot-header-text span');
+  if (subtitle) {
+    subtitle.textContent = recruiterMode ? 'Recruiter mode · quick answers' : 'Online · Ask me about Krizza';
+  }
+
+  if (!quickQuestionsEl.hidden && !activeProjectId) {
+    renderQuickQuestions();
+  }
+}
+
+function updateContextBanner(): void {
+  if (!activeProjectName) {
+    contextBannerEl.hidden = true;
+    contextBannerEl.innerHTML = '';
+    return;
+  }
+
+  contextBannerEl.hidden = false;
+  contextBannerEl.innerHTML = `
+    <span>Discussing: <strong>${escapeHtml(activeProjectName)}</strong></span>
+    <button type="button" class="chatbot-context-clear" aria-label="Stop discussing this project">&times;</button>
+  `;
+  contextBannerEl.querySelector('.chatbot-context-clear')?.addEventListener('click', () => {
+    activeProjectId = undefined;
+    activeProjectName = undefined;
+    updateContextBanner();
+  });
+}
+
 function renderEmptyState(): void {
   const greetingEl = document.createElement('div');
   greetingEl.className = 'chatbot-greeting';
-  greetingEl.textContent = GREETING;
+  greetingEl.textContent = activeProjectName
+    ? `What would you like to know about the ${activeProjectName}?`
+    : GREETING;
   messagesEl.appendChild(greetingEl);
   renderQuickQuestions();
 }
@@ -193,7 +282,14 @@ function renderEmptyState(): void {
 function renderQuickQuestions(): void {
   quickQuestionsEl.innerHTML = '';
   quickQuestionsEl.hidden = false;
-  QUICK_QUESTIONS.forEach(question => {
+
+  const list = activeProjectId
+    ? ['Give me an overview', 'What technologies were used?', 'What was Krizza\'s role?']
+    : recruiterMode
+      ? RECRUITER_QUESTIONS
+      : QUICK_QUESTIONS;
+
+  list.forEach(question => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'chatbot-quick-btn';
@@ -247,7 +343,11 @@ async function sendMessage(text: string): Promise<void> {
     const response = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: trimmed, history }),
+      body: JSON.stringify({
+        message: trimmed,
+        history,
+        ...(activeProjectId ? { projectContext: activeProjectId } : {}),
+      }),
     });
 
     const data = await response.json().catch(() => null);
@@ -321,9 +421,19 @@ function renderNavActions(userText: string, replyText: string): void {
   wrap.className = 'chatbot-actions';
 
   actions.forEach(action => {
+    if (action.copyValue) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'chatbot-action-btn';
+      btn.textContent = action.label;
+      btn.addEventListener('click', () => copyToClipboard(action.copyValue!, btn, action.label));
+      wrap.appendChild(btn);
+      return;
+    }
+
     const link = document.createElement('a');
     link.className = 'chatbot-action-btn';
-    link.href = action.href;
+    link.href = action.href!;
     link.textContent = action.label;
     if (action.external) {
       link.target = '_blank';
@@ -336,6 +446,32 @@ function renderNavActions(userText: string, replyText: string): void {
 
   messagesEl.appendChild(wrap);
   scrollToBottom();
+}
+
+async function copyToClipboard(value: string, btn: HTMLButtonElement, originalLabel: string): Promise<void> {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(value);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = value;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      textarea.remove();
+    }
+    btn.textContent = '✓ Email copied';
+    btn.classList.add('copied');
+  } catch {
+    btn.textContent = 'Copy failed — try again';
+  } finally {
+    window.setTimeout(() => {
+      btn.textContent = originalLabel;
+      btn.classList.remove('copied');
+    }, 2000);
+  }
 }
 
 function scrollToBottom(): void {

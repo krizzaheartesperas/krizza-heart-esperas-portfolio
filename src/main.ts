@@ -8,7 +8,7 @@ import {
   renderCertificates,
   renderProjectModal
 } from './components/render';
-import { initChatbot } from './components/chatbot';
+import { initChatbot, openChatWithProject } from './components/chatbot';
 
 function initApp(): void {
   // Theme Setup
@@ -364,10 +364,19 @@ function setupProjectModals(): void {
   // Event delegation — listen for View Details button clicks anywhere in body
   document.body.addEventListener('click', (e: Event) => {
     const target = e.target as HTMLElement;
-    const btn = target.closest('.view-details-btn') as HTMLElement | null;
-    if (btn) {
-      const projectId = btn.getAttribute('data-project-id');
+
+    const viewBtn = target.closest('.view-details-btn') as HTMLElement | null;
+    if (viewBtn) {
+      const projectId = viewBtn.getAttribute('data-project-id');
       if (projectId) openProjectView(projectId);
+      return;
+    }
+
+    const askAiBtn = target.closest('.ask-ai-project-btn') as HTMLElement | null;
+    if (askAiBtn) {
+      const projectId = askAiBtn.getAttribute('data-project-id');
+      const projectName = askAiBtn.getAttribute('data-project-name');
+      if (projectId && projectName) openChatWithProject(projectId, projectName);
     }
   });
 
