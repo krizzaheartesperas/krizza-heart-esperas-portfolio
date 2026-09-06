@@ -31,11 +31,10 @@ export const EXPERIENCES: ExperienceItem[] = [
     location: 'Mandaluyong City, Philippines',
     path: '~/highly-succeed-inc/hris-system',
     details: [
-      'Independently designed, developed, tested, and deployed a Human Resource Information System (HRIS) as a solo project.',
-      'Implemented authentication, employee management, and database-driven workflows.',
-      'Owned database design, CRUD operations, and overall system functionality.',
-      'Deployed and maintained the application on Vercel.',
-      'Worked with my supervisor and teammates to gather requirements and ship improvements.'
+      'Designed, developed, tested, and deployed a full-stack Human Resource Information System (HRIS) using React.js, Next.js, TypeScript, Node.js, Supabase, PostgreSQL, and REST APIs, supporting structured information management and digital workflows.',
+      'Assisted with data encoding, product listing, and information verification, ensuring product details were accurate, complete, and consistent before publication on the Unleash Animall website.',
+      'Performed data validation and CRUD operations, tested application workflows and database operations, and worked with supervisors to translate requirements into functional features.',
+      'Participated in QA training sessions focused on software testing, quality assurance processes, and identifying potential application issues.'
     ],
     stack: ['React.js', 'Next.js', 'JavaScript', 'TypeScript', 'Node.js', 'Supabase', 'Vercel', 'PostgreSQL', 'REST APIs']
   }
