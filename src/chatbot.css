@@ -221,30 +221,6 @@
   display: block;
 }
 
-.chatbot-status-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--teal);
-  box-shadow: 0 0 0 3px var(--teal-dim);
-  flex-shrink: 0;
-  animation: chatbot-pulse 2.4s ease-in-out infinite;
-}
-
-/* Inside the header avatar, the dot becomes a small "online" badge
-   pinned to its corner instead of sitting inline next to the title. */
-.chatbot-avatar .chatbot-status-dot {
-  position: absolute;
-  right: -1px;
-  bottom: -1px;
-  box-shadow: 0 0 0 2px var(--bg-body-alt);
-}
-
-@keyframes chatbot-pulse {
-  0%, 100% { box-shadow: 0 0 0 3px var(--teal-dim); }
-  50% { box-shadow: 0 0 0 5px var(--teal-dim); }
-}
-
 .chatbot-header-text {
   min-width: 0;
 }
@@ -577,6 +553,7 @@
   flex: 1;
   resize: none;
   max-height: 96px;
+  overflow-y: auto;
   font-family: var(--font-body);
   font-size: 13.5px;
   line-height: 1.4;
@@ -586,10 +563,34 @@
   background: var(--bg-body-alt);
   color: var(--text-heading);
   transition: border-color 0.2s ease;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-onink) transparent;
 }
 
 .chatbot-input::placeholder {
   color: var(--text-muted);
+}
+
+/* Suppress the native scrollbar's step-arrow buttons (the boxed up/down
+   chevrons Windows/Chromium render at the field's edge) — the textarea
+   already auto-grows via JS, so those buttons only add visual clutter. */
+.chatbot-input::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatbot-input::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chatbot-input::-webkit-scrollbar-thumb {
+  background: var(--line-onink);
+  border-radius: 999px;
+}
+
+.chatbot-input::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .chatbot-input:focus-visible,
@@ -639,7 +640,6 @@
   .chatbot-toggle svg,
   .chatbot-toggle img,
   .chatbot-msg,
-  .chatbot-status-dot,
   .chatbot-typing span {
     animation: none !important;
     transition: none !important;

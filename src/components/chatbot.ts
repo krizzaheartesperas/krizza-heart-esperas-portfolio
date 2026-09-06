@@ -93,7 +93,6 @@ export function initChatbot(): void {
         <div class="chatbot-header-info">
           <span class="chatbot-avatar">
             <img src="${CHATBOT_ICON_SRC}" alt="" />
-            <span class="chatbot-status-dot" aria-hidden="true"></span>
           </span>
           <div class="chatbot-header-text">
             <h2 id="chatbotTitle">AI Portfolio Assistant</h2>
@@ -127,6 +126,10 @@ export function initChatbot(): void {
           maxlength="${MAX_MESSAGE_LENGTH}"
           placeholder="Ask me anything..."
           aria-label="Message the AI Portfolio Assistant"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
         ></textarea>
         <button type="submit" class="chatbot-send-btn" id="chatbotSend" aria-label="Send message" disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
