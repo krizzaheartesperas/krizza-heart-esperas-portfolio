@@ -65,6 +65,7 @@ let activeProjectId: string | undefined;
 let activeProjectName: string | undefined;
 
 let toggleBtn: HTMLButtonElement;
+let closeBtn: HTMLButtonElement;
 let panel: HTMLDivElement;
 let messagesEl: HTMLDivElement;
 let quickQuestionsEl: HTMLDivElement;
@@ -103,7 +104,7 @@ export function initChatbot(): void {
           <button type="button" class="chatbot-icon-btn" id="chatbotReset" aria-label="Start new conversation" title="New conversation">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-8.14L1 10"/></svg>
           </button>
-          <button type="button" class="chatbot-icon-btn" id="chatbotClose" aria-label="Close chat">
+          <button type="button" class="chatbot-icon-btn" id="chatbotClose" aria-label="Close AI Portfolio Assistant">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
@@ -141,7 +142,7 @@ export function initChatbot(): void {
   form = root.querySelector('#chatbotForm') as HTMLFormElement;
   input = root.querySelector('#chatbotInput') as HTMLTextAreaElement;
   sendBtn = root.querySelector('#chatbotSend') as HTMLButtonElement;
-  const closeBtn = root.querySelector('#chatbotClose') as HTMLButtonElement;
+  closeBtn = root.querySelector('#chatbotClose') as HTMLButtonElement;
   const resetBtn = root.querySelector('#chatbotReset') as HTMLButtonElement;
 
   toggleBtn.addEventListener('click', () => {
@@ -174,7 +175,41 @@ export function initChatbot(): void {
     }
   });
 
+  window.addEventListener('resize', applyViewportMode);
+
   renderEmptyState();
+}
+
+/**
+ * Mobile and desktop share one panel; this decides which mode applies right
+ * now so it can be re-checked on resize/orientation change while the chat is
+ * open, since a rotated phone can cross the 768px breakpoint mid-session.
+ */
+function isMobileViewport(): boolean {
+  return window.matchMedia('(max-width: 768px)').matches;
+}
+
+function lockBodyScroll(): void {
+  document.body.classList.add('chatbot-mobile-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function unlockBodyScroll(): void {
+  document.body.classList.remove('chatbot-mobile-open');
+  if (!document.body.classList.contains('project-view-open')) {
+    document.body.style.overflow = '';
+  }
+}
+
+function applyViewportMode(): void {
+  if (!panel.classList.contains('open')) return;
+  const mobile = isMobileViewport();
+  panel.setAttribute('aria-modal', String(mobile));
+  if (mobile) {
+    lockBodyScroll();
+  } else {
+    unlockBodyScroll();
+  }
 }
 
 /**
@@ -203,11 +238,18 @@ function openChat(): void {
   toggleBtn.setAttribute('aria-expanded', 'true');
   toggleBtn.setAttribute('aria-label', 'Close AI Portfolio Assistant');
 
+  const mobile = isMobileViewport();
+  panel.setAttribute('aria-modal', String(mobile));
+  if (mobile) lockBodyScroll();
+
   if (!hasOpenedBefore) {
     hasOpenedBefore = true;
   }
 
-  window.setTimeout(() => input.focus(), 260);
+  // On mobile the panel becomes a full-screen dialog, so focus goes to the
+  // close button instead of the textarea to avoid yanking up the keyboard
+  // the instant it opens.
+  window.setTimeout(() => (mobile ? closeBtn : input).focus(), 260);
 }
 
 function closeChat(): void {
@@ -215,6 +257,7 @@ function closeChat(): void {
   toggleBtn.classList.remove('open');
   toggleBtn.setAttribute('aria-expanded', 'false');
   toggleBtn.setAttribute('aria-label', 'Open AI Portfolio Assistant');
+  unlockBodyScroll();
   window.setTimeout(() => {
     if (!panel.classList.contains('open')) panel.hidden = true;
   }, 300);
