@@ -338,7 +338,7 @@
 
 .chatbot-greeting {
   font-size: 13.5px;
-  color: var(--text-body);
+  color: var(--text-heading);
   line-height: 1.55;
 }
 
@@ -366,8 +366,8 @@
 
 .chatbot-msg.assistant {
   align-self: flex-start;
-  background: var(--bg-body-alt);
-  color: var(--text-body);
+  background: var(--bg-surface-raised);
+  color: var(--text-heading);
   border-bottom-left-radius: 4px;
 }
 
@@ -448,7 +448,7 @@
   align-items: center;
   gap: 4px;
   padding: 12px 14px;
-  background: var(--bg-body-alt);
+  background: var(--bg-surface-raised);
   border-radius: 12px;
   border-bottom-left-radius: 4px;
 }

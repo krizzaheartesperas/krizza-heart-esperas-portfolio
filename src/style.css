@@ -13,6 +13,7 @@
   --bg: var(--bg-body);
   --bg-body-alt: #131922;
   --bg-card: #161e2b;
+  --bg-surface-raised: #1d283a;
   --bg-nav: rgba(13, 17, 23, 0.88);
   --bg-hero: #080b10;
   --bg-contact: #080b10;
@@ -20,8 +21,8 @@
   --font-heading: 'Bricolage Grotesque', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
   --text-heading: #f4f5f2;
-  --text-body: #cbd5e1;
-  --text-muted: #94a3b8;
+  --text-body: #e2e8f0;
+  --text-muted: #9fadc0;
   --text-nav: #94a3b8;
   --text-nav-hover: #ffffff;
   --nav-border: rgba(255, 255, 255, 0.1);
@@ -48,6 +49,7 @@
   --bg: var(--bg-body);
   --bg-body-alt: #e6e9e1;
   --bg-card: #ffffff;
+  --bg-surface-raised: #e6e9e1;
   --bg-nav: rgba(244, 245, 240, 0.88);
   --bg-hero: #f4f5f0;
   --bg-contact: #f4f5f0;
