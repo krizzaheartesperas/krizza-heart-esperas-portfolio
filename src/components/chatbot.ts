@@ -14,18 +14,18 @@ interface NavAction {
 }
 
 const GREETING =
-  "Hi! I'm Krizza's AI Portfolio Assistant. I can tell you about Krizza's background, education, skills, projects, experience, and technical background. What would you like to know?";
+  "Hi! I'm Krizza's AI Portfolio Assistant. I can tell you about my background, education, skills, projects, experience, and technical background. What would you like to know?";
 
 const QUICK_QUESTIONS = [
-  'Tell me about Krizza',
-  'View projects',
-  'Technical skills',
-  'Internship experience',
-  'AI & automation experience',
-  'QA experience',
-  'Education',
-  'Contact information',
-  'GitHub',
+  'Tell me about yourself',
+  'My projects',
+  'My technical skills',
+  'My internship experience',
+  'My AI experience',
+  'My QA experience',
+  'My education',
+  'Contact me',
+  'My GitHub',
 ];
 
 const RECRUITER_QUESTIONS = [
@@ -42,16 +42,16 @@ const RECRUITER_QUESTIONS = [
 const EMAIL_ADDRESS = 'krizzaheart.esperas@gmail.com';
 
 const NAV_RULES: { pattern: RegExp; action: NavAction }[] = [
-  { pattern: /\bproject/i, action: { label: 'View Projects', href: '#projects' } },
-  { pattern: /internship|hris|highly succeed/i, action: { label: 'View Experience', href: '#experience' } },
-  { pattern: /skill|technolog|stack/i, action: { label: 'View Skills', href: '#skills' } },
-  { pattern: /resume|cv\b/i, action: { label: 'View Resume', href: '/resume.pdf', external: true } },
-  { pattern: /\bemail\b/i, action: { label: 'Email Krizza', copyValue: EMAIL_ADDRESS } },
-  { pattern: /contact|reach|hire|get in touch/i, action: { label: 'Contact Krizza', href: '#contact' } },
-  { pattern: /award|credential|certificat/i, action: { label: 'View Credentials', href: '#credentials' } },
-  { pattern: /education|degree|university|graduat|gwa/i, action: { label: 'View About', href: '#about' } },
-  { pattern: /github/i, action: { label: 'View GitHub', href: 'https://github.com/krizzaheartesperas', external: true } },
-  { pattern: /linkedin/i, action: { label: 'View LinkedIn', href: 'https://www.linkedin.com/in/krizza-heart-esperas-550ab9368', external: true } },
+  { pattern: /\bproject/i, action: { label: 'View My Projects', href: '#projects' } },
+  { pattern: /internship|hris|highly succeed/i, action: { label: 'View My Experience', href: '#experience' } },
+  { pattern: /skill|technolog|stack/i, action: { label: 'View My Skills', href: '#skills' } },
+  { pattern: /resume|cv\b/i, action: { label: 'View My Resume', href: '/resume.pdf', external: true } },
+  { pattern: /\bemail\b/i, action: { label: 'Email Me', copyValue: EMAIL_ADDRESS } },
+  { pattern: /contact|reach|hire|get in touch/i, action: { label: 'Contact Me', href: '#contact' } },
+  { pattern: /award|credential|certificat/i, action: { label: 'View My Credentials', href: '#credentials' } },
+  { pattern: /education|degree|university|graduat|gwa/i, action: { label: 'About Me', href: '#about' } },
+  { pattern: /github/i, action: { label: 'View My GitHub', href: 'https://github.com/krizzaheartesperas', external: true } },
+  { pattern: /linkedin/i, action: { label: 'View My LinkedIn', href: 'https://www.linkedin.com/in/krizza-heart-esperas-550ab9368', external: true } },
 ];
 
 const MAX_MESSAGE_LENGTH = 600;
@@ -93,7 +93,7 @@ export function initChatbot(): void {
           <span class="chatbot-status-dot" aria-hidden="true"></span>
           <div class="chatbot-header-text">
             <h2 id="chatbotTitle">AI Portfolio Assistant</h2>
-            <span>Online &middot; Ask me about Krizza</span>
+            <span>Online &middot; Ask me anything</span>
           </div>
         </div>
         <div class="chatbot-header-actions">
@@ -121,7 +121,7 @@ export function initChatbot(): void {
           id="chatbotInput"
           rows="1"
           maxlength="${MAX_MESSAGE_LENGTH}"
-          placeholder="Ask me about Krizza..."
+          placeholder="Ask me anything..."
           aria-label="Message the AI Portfolio Assistant"
         ></textarea>
         <button type="submit" class="chatbot-send-btn" id="chatbotSend" aria-label="Send message" disabled>
@@ -242,7 +242,7 @@ function toggleRecruiterMode(): void {
 
   const subtitle = panel.querySelector('.chatbot-header-text span');
   if (subtitle) {
-    subtitle.textContent = recruiterMode ? 'Recruiter mode · quick answers' : 'Online · Ask me about Krizza';
+    subtitle.textContent = recruiterMode ? 'Recruiter mode · quick answers' : 'Online · Ask me anything';
   }
 
   if (!quickQuestionsEl.hidden && !activeProjectId) {
@@ -284,7 +284,7 @@ function renderQuickQuestions(): void {
   quickQuestionsEl.hidden = false;
 
   const list = activeProjectId
-    ? ['Give me an overview', 'What technologies were used?', 'What was Krizza\'s role?']
+    ? ['Give me an overview', 'What technologies were used?', 'What was your role in this project?']
     : recruiterMode
       ? RECRUITER_QUESTIONS
       : QUICK_QUESTIONS;
@@ -365,7 +365,7 @@ async function sendMessage(text: string): Promise<void> {
     addMessage({
       role: 'assistant',
       content:
-        "Sorry, I'm having trouble responding right now. Please try again or use the Contact section to reach Krizza directly.",
+        "Sorry, I'm having trouble responding right now. Please try again or use the Contact section to reach me directly.",
       isError: true,
     });
   } finally {

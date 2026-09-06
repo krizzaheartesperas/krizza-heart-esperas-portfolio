@@ -14,7 +14,7 @@ const REQUEST_TIMEOUT_MS = 12_000;
 const MAX_ATTEMPTS = 2;
 
 const FALLBACK_MESSAGE =
-  "Sorry, I'm having trouble responding right now. Please try again or use the Contact section to reach Krizza directly.";
+  "Sorry, I'm having trouble responding right now. Please try again or use the Contact section to reach me directly.";
 
 interface ChatTurn {
   role: 'user' | 'assistant';
@@ -124,7 +124,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (SECRET_EXTRACTION_PATTERN.test(message)) {
     res.status(200).json({
       reply:
-        "I can't share internal implementation details or credentials. I'm happy to tell you about Krizza's background, skills, or projects instead.",
+        "I can't share internal implementation details or credentials. I'm happy to tell you about my background, skills, or projects instead.",
     });
     return;
   }
