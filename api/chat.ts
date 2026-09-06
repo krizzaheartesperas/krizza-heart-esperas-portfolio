@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import OpenAI from 'openai';
+import OpenAI, { APIError } from 'openai';
 import { getSystemPrompt, PROJECT_CONTEXT_MAP } from './lib/knowledge.js';
 import { isRateLimited } from './lib/rateLimit.js';
 
@@ -10,7 +10,7 @@ export const config = {
 const MAX_MESSAGE_LENGTH = 800;
 const MAX_HISTORY_MESSAGES = 8;
 const MAX_HISTORY_MESSAGE_LENGTH = 500;
-const REQUEST_TIMEOUT_MS = 12_000;
+const REQUEST_TIMEOUT_MS = 9_000;
 const MAX_ATTEMPTS = 2;
 
 const FALLBACK_MESSAGE =
@@ -51,12 +51,22 @@ function isAbortError(error: unknown): boolean {
   );
 }
 
+// Retry timeouts (queueing) and 5xx/connection errors — both are transient
+// on Groq's shared free tier. Skip 4xx (bad request, auth, rate limit): those
+// fail the same way every time, so retrying just makes the user wait longer
+// for the same error.
+function isRetryableError(error: unknown): boolean {
+  if (isAbortError(error)) return true;
+  if (error instanceof APIError) return error.status === undefined || error.status >= 500;
+  return false;
+}
+
 /**
  * Groq's shared free-tier capacity occasionally queues a request long enough
- * to blow past a single timeout even though the model itself responds in
- * under a second most of the time. One retry with a fresh short timeout
- * recovers from that transient case without making a slow user wait twice
- * as long for a real failure.
+ * to blow past a single timeout, or returns a transient 5xx, even though the
+ * model itself responds in under a second most of the time. One retry with a
+ * fresh short timeout recovers from that without making a slow user wait
+ * much longer for a real failure.
  */
 async function callGroqWithRetry(
   groq: OpenAI,
@@ -75,7 +85,7 @@ async function callGroqWithRetry(
       return reply;
     } catch (error) {
       lastError = error;
-      if (!isAbortError(error) || attempt === MAX_ATTEMPTS) throw error;
+      if (!isRetryableError(error) || attempt === MAX_ATTEMPTS) throw error;
     } finally {
       clearTimeout(timeout);
     }
@@ -151,7 +161,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         { role: 'user', content: message },
       ],
       temperature: 0.4,
-      max_tokens: 500,
+      max_tokens: 350,
       // gpt-oss models reason before answering; this is simple grounded Q&A,
       // so keep reasoning effort low to cut latency without hurting quality.
       reasoning_effort: 'low',
